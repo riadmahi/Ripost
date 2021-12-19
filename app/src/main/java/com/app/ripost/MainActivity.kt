@@ -1,10 +1,8 @@
 package com.app.ripost
 
 import android.Manifest
-import android.R.drawable
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.graphics.drawable.Animatable
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.os.Handler
@@ -41,7 +39,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var captureBtnOn = false
         //Camera facing selector
         // Request camera permissions
         if (allPermissionsGranted()) {
@@ -69,7 +66,7 @@ class MainActivity : AppCompatActivity() {
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
-        cameraProviderFuture.addListener(Runnable {
+        cameraProviderFuture.addListener({
             // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
 
