@@ -1,28 +1,31 @@
 package com.app.ripost
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.Manifest
+import android.R.drawable
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.drawable.Animatable
+import android.graphics.drawable.AnimatedVectorDrawable
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import java.util.concurrent.Executors
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.app.ripost.Utils.DoubleClickListener
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+
 
 class MainActivity : AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
@@ -30,12 +33,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var camera: Camera
+    private var isRecording = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        var captureBtnOn = false
         //Camera facing selector
         var cameraFacing = 1
         // Request camera permissions
@@ -47,18 +51,85 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        viewFinder.setOnClickListener(object: DoubleClickListener(){
+        viewFinder.setOnClickListener(object : DoubleClickListener() {
             override fun onDoubleClick(v: View) {
-                cameraFacing = if(cameraFacing == 0)  1 else 0
+                cameraFacing = if (cameraFacing == 0) 1 else 0
                 startCamera(cameraFacing)
             }
         })
         // Set up the listener for take photo button
-        camera_capture_button.setOnClickListener { takePhoto() }
+        camera_capture_button.setOnClickListener {
+            Log.d(TAG, "onCreate: capture btn clicked")
+            takePhoto()
+            captureBtnOn = if(captureBtnOn) {
+                animCaptureButtonOff()
+                false
+            }else {
+                animCaptureButtonOn()
+                true
+            }
+        }
+
+        avd_record_indicator.setOnClickListener {
+            Log.d(TAG, "onCreate: avd record indicator visibility = $isRecording")
+            isRecording = false
+            animRecordingIndicator()
+        }
+        checkCaptureType()
 
         outputDirectory = getOutputDirectory()
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+    }
+
+    /**
+     *  Check if the user want to capture a photo or record a video
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    private fun checkCaptureType(){
+        var pressTime = -1L
+        var releaseTime = 1L
+        var duration: Long
+        camera_capture_button.setOnTouchListener { _, event ->
+            if(event.action == MotionEvent.ACTION_DOWN){
+                pressTime = System.currentTimeMillis()
+                if(releaseTime != -1L) duration = pressTime - releaseTime
+            }
+            else if(event.action == MotionEvent.ACTION_UP){
+                releaseTime = System.currentTimeMillis()
+                duration = System.currentTimeMillis() - pressTime
+                Log.d(TAG, "checkCaptureType: duration =$duration")
+
+                if(duration >= 500L){
+                    //The user want to record a video
+
+                    isRecording = true
+                    animRecordingIndicator()
+                }
+            }
+            return@setOnTouchListener false
+        }
+
+
+    }
+
+    private fun animRecordingIndicator(){
+        if(!isRecording){
+            Log.d(TAG, "animRecordingIndicator: hide record indicator")
+            avd_record_indicator.setImageResource(R.drawable.avd_record_off)
+            val shapeTransformation = avd_record_indicator.drawable as AnimatedVectorDrawable
+            shapeTransformation.start()
+            avd_record_indicator.visibility = View.GONE
+            camera_capture_button.visibility = View.VISIBLE
+        }else{
+            Log.d(TAG, "animRecordingIndicator: show record indicator")
+            camera_capture_button.visibility = View.GONE
+            avd_record_indicator.setImageResource(R.drawable.avd_record_on)
+            avd_record_indicator.visibility = View.VISIBLE
+
+            val shapeTransformation = avd_record_indicator.drawable as AnimatedVectorDrawable
+            shapeTransformation.start()
+        }
     }
 
     private fun takePhoto() {}
@@ -129,6 +200,17 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun animCaptureButtonOn(){
+        camera_capture_button.setImageResource(R.drawable.avd_btn_capture_on)
+        val shapeTransformation = camera_capture_button.drawable as AnimatedVectorDrawable
+        shapeTransformation.start()
+    }
+
+    private fun animCaptureButtonOff(){
+        camera_capture_button.setImageResource(R.drawable.avd_btn_capture_off)
+        val shapeTransformation = camera_capture_button.drawable as AnimatedVectorDrawable
+        shapeTransformation.start()
+    }
 
     private fun showFocusCircle(x: Float, y: Float){
         //Show the focus circle
@@ -137,7 +219,7 @@ class MainActivity : AppCompatActivity() {
         focusCircle.visibility = View.VISIBLE
         Handler(Looper.getMainLooper()).postDelayed({
             focusCircle.visibility = View.GONE
-        },500)
+        }, 500)
 
     }
 
@@ -163,15 +245,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray) {
+        IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
                 startCamera(0)
             } else {
-                Toast.makeText(this,
+                Toast.makeText(
+                    this,
                     "Permissions not granted by the user.",
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_SHORT
+                ).show()
                 finish()
             }
         }
