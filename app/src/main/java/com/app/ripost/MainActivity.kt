@@ -9,9 +9,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.Toast
-import androidx.camera.camera2.interop.Camera2CameraControl.from
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.util.concurrent.Executors
@@ -20,7 +18,6 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import com.app.ripost.Utils.DoubleClickListener
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
-import java.util.Date.from
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.TimeUnit
 
