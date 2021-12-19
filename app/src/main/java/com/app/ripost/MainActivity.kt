@@ -11,6 +11,7 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Toast
+import androidx.camera.camera2.interop.Camera2CameraControl.from
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.util.concurrent.Executors
@@ -19,7 +20,9 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import com.app.ripost.Utils.DoubleClickListener
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
+import java.util.Date.from
 import java.util.concurrent.ExecutorService
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
@@ -33,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //Camera facing selector
-        var cameraFacing = 0
+        var cameraFacing = 1
         // Request camera permissions
         if (allPermissionsGranted()) {
             startCamera(cameraFacing)
@@ -63,6 +66,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun takePhoto() {}
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun startCamera(cameraFacing: Int) {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
@@ -78,7 +82,8 @@ class MainActivity : AppCompatActivity() {
                 }
 
             // Select back camera as a default
-            val cameraSelector = if(cameraFacing ==1) CameraSelector.DEFAULT_BACK_CAMERA else CameraSelector.DEFAULT_FRONT_CAMERA
+            val cameraSelector =
+                if (cameraFacing == 1) CameraSelector.DEFAULT_BACK_CAMERA else CameraSelector.DEFAULT_FRONT_CAMERA
 
             try {
                 // Unbind use cases before rebinding
@@ -86,11 +91,13 @@ class MainActivity : AppCompatActivity() {
 
                 // Bind use cases to camera
                 camera = cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview)
+                    this, cameraSelector, preview
+                )
 
                 val listener = object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
                     override fun onScale(detector: ScaleGestureDetector): Boolean {
-                        val scale = camera.cameraInfo.zoomState.value!!.zoomRatio * detector.scaleFactor
+                        val scale =
+                            camera.cameraInfo.zoomState.value!!.zoomRatio * detector.scaleFactor
                         camera.cameraControl.setZoomRatio(scale)
                         return true
                     }
@@ -99,7 +106,21 @@ class MainActivity : AppCompatActivity() {
 
                 val scaleDetector = ScaleGestureDetector(this, listener)
 
-            } catch(exc: Exception) {
+                viewFinder.setOnTouchListener { _, event ->
+                    if (event.action == MotionEvent.ACTION_DOWN) {
+                        val factory = viewFinder.meteringPointFactory
+                        val point = factory.createPoint(event.x, event.y)
+                        val action = FocusMeteringAction.Builder(point, FocusMeteringAction.FLAG_AF)
+                            .setAutoCancelDuration(5, TimeUnit.SECONDS)
+                            .build()
+                        camera.cameraControl.startFocusAndMetering(action)
+                    }
+                    scaleDetector.onTouchEvent(event)
+                    return@setOnTouchListener false
+                }
+
+
+            } catch (exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
 
@@ -107,6 +128,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
 
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
