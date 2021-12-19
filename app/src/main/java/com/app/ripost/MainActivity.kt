@@ -177,6 +177,7 @@ class MainActivity : AppCompatActivity() {
                 viewFinder.setOnTouchListener { _, event ->
                     if (event.action == MotionEvent.ACTION_DOWN) {
                         //Set focus when click action
+
                         val factory = viewFinder.meteringPointFactory
                         val point = factory.createPoint(event.x, event.y)
                         val action = FocusMeteringAction.Builder(point, FocusMeteringAction.FLAG_AF)
