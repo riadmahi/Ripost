@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="50dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/ic_camera_selected"
+        android:id="@+id/btnCameraSelected"
+        android:layout_gravity="center_horizontal"/>
+    <ImageView
+        android:layout_marginTop="15dp"
+        android:layout_width="45dp"
+        android:id="@+id/timer"
+        android:layout_height="45dp"
+        android:src="@drawable/ic_timer"
+        android:layout_gravity="center_horizontal"/>
+
+    <ImageView
+        android:layout_marginTop="15dp"
+        android:id="@+id/music"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/ic_music"
+        android:layout_gravity="center_horizontal"/>
+
+    <ImageView
+        android:layout_marginTop="15dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/ic_flashlight"
+        android:id="@+id/flashlight"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>

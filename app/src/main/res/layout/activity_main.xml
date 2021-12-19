@@ -14,6 +14,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!-- Right widget bar -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp">
+        <include layout="@layout/snippet_camera_widgets"/>
+    </RelativeLayout>
+
+    <!-- Camera Button -->
+
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
