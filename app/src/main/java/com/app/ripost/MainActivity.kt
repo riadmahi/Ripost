@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.drawable.AnimatedVectorDrawable
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -26,10 +27,10 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
+
 class MainActivity : AppCompatActivity() {
 
     //WIDGETS
-    private var imageCapture: ImageCapture? = null
     private lateinit var progressTimer: Timer
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     private var isRecording = false
     private var cameraFacing = 0
     private var currentProgress = 0
+    private var timerCountDown = 0
 
 
 
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             startCamera()
         } else {
             ActivityCompat.requestPermissions(
-                    this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
             )
         }
 
@@ -77,14 +79,14 @@ class MainActivity : AppCompatActivity() {
 
             // Preview
             val preview = Preview.Builder()
-                    .build()
-                    .also {
-                        it.setSurfaceProvider(viewFinder.surfaceProvider)
-                    }
+                .build()
+                .also {
+                    it.setSurfaceProvider(viewFinder.surfaceProvider)
+                }
 
             // Select back camera as a default
             val cameraSelector =
-                    if (cameraFacing == 1) CameraSelector.DEFAULT_BACK_CAMERA else CameraSelector.DEFAULT_FRONT_CAMERA
+                if (cameraFacing == 1) CameraSelector.DEFAULT_BACK_CAMERA else CameraSelector.DEFAULT_FRONT_CAMERA
 
             try {
                 // Unbind use cases before rebinding
@@ -92,13 +94,13 @@ class MainActivity : AppCompatActivity() {
 
                 // Bind use cases to camera
                 camera = cameraProvider.bindToLifecycle(
-                        this, cameraSelector, preview
+                    this, cameraSelector, preview
                 )
 
                 val listener = object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
                     override fun onScale(detector: ScaleGestureDetector): Boolean {
                         val scale =
-                                camera.cameraInfo.zoomState.value!!.zoomRatio * detector.scaleFactor
+                            camera.cameraInfo.zoomState.value!!.zoomRatio * detector.scaleFactor
                         camera.cameraControl.setZoomRatio(scale)
                         return true
                     }
@@ -110,12 +112,11 @@ class MainActivity : AppCompatActivity() {
                 viewFinder.setOnTouchListener { _, event ->
                     if (event.action == MotionEvent.ACTION_DOWN) {
                         //Set focus when click action
-
                         val factory = viewFinder.meteringPointFactory
                         val point = factory.createPoint(event.x, event.y)
                         val action = FocusMeteringAction.Builder(point, FocusMeteringAction.FLAG_AF)
-                                .setAutoCancelDuration(5, TimeUnit.SECONDS)
-                                .build()
+                            .setAutoCancelDuration(5, TimeUnit.SECONDS)
+                            .build()
                         camera.cameraControl.startFocusAndMetering(action)
                         showFocusCircle(event.x, event.y)
 
@@ -138,7 +139,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
-                baseContext, it
+            baseContext, it
         ) == PackageManager.PERMISSION_GRANTED
     }
 
@@ -153,8 +154,8 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onRequestPermissionsResult(
-            requestCode: Int, permissions: Array<String>, grantResults:
-            IntArray
+        requestCode: Int, permissions: Array<String>, grantResults:
+        IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
@@ -162,9 +163,9 @@ class MainActivity : AppCompatActivity() {
                 startCamera()
             } else {
                 Toast.makeText(
-                        this,
-                        "Permissions not granted by the user.",
-                        Toast.LENGTH_SHORT
+                    this,
+                    "Permissions not granted by the user.",
+                    Toast.LENGTH_SHORT
                 ).show()
                 finish()
             }
@@ -187,15 +188,21 @@ class MainActivity : AppCompatActivity() {
 
         camera_capture_button.setOnClickListener {
             Log.d(TAG, "onCreate: capture btn clicked")
-            takePhoto()
-            animCaptureButtonOn()
-            isRecording = true
-            animRecordingIndicator()
+            setCountDownTimer()
+            if(timerCountDown == 0){
+                countDownTimer.visibility = View.GONE
+                takePhoto()
+                animCaptureButtonOn()
+                isRecording = true
+                animRecordingIndicator()
+                if (currentProgress == 0)
+                    initProgressTimer()
+                else
+                    progressTimer.start()
+                val ring: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.timer_count_down)
+                ring.start()
+            }
 
-            if (currentProgress == 0)
-                initProgressTimer()
-            else
-                progressTimer.start()
         }
 
         avd_record_indicator.setOnClickListener {
@@ -203,6 +210,8 @@ class MainActivity : AppCompatActivity() {
             animRecordingIndicator()
             animCaptureButtonOff()
             progressTimer.pause()
+            val ring: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.sound_camera_off)
+            ring.start()
         }
 
         btnCameraSelected.setOnClickListener {
@@ -220,12 +229,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 0 default | 1 5s | 2 10s
-        var timerPosition = 0
+        timerCountDown = 0
         timer.setOnClickListener {
-            timerPosition += 1
-            timerPosition %= 3
-            Log.d(TAG, "setupCameraWidget: timer position = $timerPosition")
-            when(timerPosition){
+            timerCountDown += 1
+            timerCountDown %= 3
+            Log.d(TAG, "setupCameraWidget: timer position = $timerCountDown")
+            when(timerCountDown){
                 0 -> {
                     timer.setImageResource(R.drawable.ic_timer)
                 }
@@ -236,6 +245,43 @@ class MainActivity : AppCompatActivity() {
                     timer.setImageResource(R.drawable.ic_timer_10s)
                 }
             }
+        }
+
+    }
+    @SuppressLint("SetTextI18n")
+    private fun setCountDownTimer() {
+        if (timerCountDown != 0) {
+            val millisInFuture = when (timerCountDown) {
+                1 -> 5000L
+                2 -> 10000L
+            else -> 0L
+            }
+            countDownTimer.visibility = View.VISIBLE
+            val timer = object : Timer(millisInFuture, 1000) {
+                override fun onTimerTick(millisUntilFinished: Long) {
+                    Log.d(TAG, "onTimerTick: decompte: ${millisUntilFinished / 1000}s")
+                    val sec = (millisUntilFinished / 1000).toInt()
+                    countDownTimer.text = "${sec}s"
+                    val ring: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.timer_count_down)
+                    ring.start()
+                }
+
+                override fun onTimerFinish() {
+                    countDownTimer.visibility = View.GONE
+                    takePhoto()
+                    animCaptureButtonOn()
+                    isRecording = true
+                    animRecordingIndicator()
+                    if (currentProgress == 0)
+                        initProgressTimer()
+                    else
+                        progressTimer.start()
+                    val ring: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.sound_camera_on)
+                    ring.start()
+                }
+
+            }
+            timer.start()
         }
     }
 
@@ -305,6 +351,8 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTimerFinish() {
                 Log.d("MainActivity", "onTimerFinish")
+                val ring: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.sound_camera_off)
+                ring.start()
             }
 
         }
@@ -312,7 +360,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateProgressUI(){
-        progressBar.setProgress(currentProgress , true)
+        progressBar.setProgress(currentProgress, true)
     }
 
 
