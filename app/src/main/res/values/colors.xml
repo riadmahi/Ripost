@@ -8,4 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#1DEFB0</color>
+    <color name="background">#000</color>
+    <color name="placeholder">#C9C8CC</color>
+    <color name="input">#282729</color>
 </resources>

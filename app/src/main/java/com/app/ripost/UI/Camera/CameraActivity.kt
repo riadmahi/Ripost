@@ -1,4 +1,4 @@
-package com.app.ripost
+package com.app.ripost.UI.Camera
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -9,27 +9,29 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.MotionEvent
-import android.view.ScaleGestureDetector
-import android.view.View
+import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.*
+import androidx.camera.core.Camera
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.FocusMeteringAction
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.app.ripost.R
+import com.app.ripost.Utils.BottomNavigationHelper
 import com.app.ripost.Utils.DoubleClickListener
 import com.app.ripost.Utils.Timer
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_camera.*
+import kotlinx.android.synthetic.main.layout_bottom_navigation.*
 import kotlinx.android.synthetic.main.snippet_camera_widgets.*
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
-
-class MainActivity : AppCompatActivity() {
-
+class CameraActivity : AppCompatActivity(){
     //WIDGETS
     private lateinit var progressTimer: Timer
     private lateinit var outputDirectory: File
@@ -47,14 +49,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_camera)
         //Camera facing selector
         // Request camera permissions
+
+        setupBottomNavigation()
         if (allPermissionsGranted()) {
             startCamera()
         } else {
             ActivityCompat.requestPermissions(
-                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+                    this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
             )
         }
 
@@ -63,9 +67,15 @@ class MainActivity : AppCompatActivity() {
         outputDirectory = getOutputDirectory()
 
         cameraExecutor = Executors.newSingleThreadExecutor()
-
     }
 
+    private fun setupBottomNavigation(){
+        Log.d(TAG, "setupBottomNavigation: started.")
+        BottomNavigationHelper().navigate(this, bottom_navigation)
+        val menu: Menu = bottom_navigation.menu
+        val menuItem: MenuItem = menu.getItem(ACTIVITY_NUM)
+        menuItem.isChecked = true
+    }
 
     private fun takePhoto() {}
 
@@ -79,14 +89,14 @@ class MainActivity : AppCompatActivity() {
 
             // Preview
             val preview = Preview.Builder()
-                .build()
-                .also {
-                    it.setSurfaceProvider(viewFinder.surfaceProvider)
-                }
+                    .build()
+                    .also {
+                        it.setSurfaceProvider(viewFinder.surfaceProvider)
+                    }
 
             // Select back camera as a default
             val cameraSelector =
-                if (cameraFacing == 1) CameraSelector.DEFAULT_BACK_CAMERA else CameraSelector.DEFAULT_FRONT_CAMERA
+                    if (cameraFacing == 1) CameraSelector.DEFAULT_BACK_CAMERA else CameraSelector.DEFAULT_FRONT_CAMERA
 
             try {
                 // Unbind use cases before rebinding
@@ -94,13 +104,13 @@ class MainActivity : AppCompatActivity() {
 
                 // Bind use cases to camera
                 camera = cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview
+                        this, cameraSelector, preview
                 )
 
                 val listener = object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
                     override fun onScale(detector: ScaleGestureDetector): Boolean {
                         val scale =
-                            camera.cameraInfo.zoomState.value!!.zoomRatio * detector.scaleFactor
+                                camera.cameraInfo.zoomState.value!!.zoomRatio * detector.scaleFactor
                         camera.cameraControl.setZoomRatio(scale)
                         return true
                     }
@@ -115,8 +125,8 @@ class MainActivity : AppCompatActivity() {
                         val factory = viewFinder.meteringPointFactory
                         val point = factory.createPoint(event.x, event.y)
                         val action = FocusMeteringAction.Builder(point, FocusMeteringAction.FLAG_AF)
-                            .setAutoCancelDuration(5, TimeUnit.SECONDS)
-                            .build()
+                                .setAutoCancelDuration(5, TimeUnit.SECONDS)
+                                .build()
                         camera.cameraControl.startFocusAndMetering(action)
                         showFocusCircle(event.x, event.y)
 
@@ -139,7 +149,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
-            baseContext, it
+                baseContext, it
         ) == PackageManager.PERMISSION_GRANTED
     }
 
@@ -154,8 +164,8 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray
+            requestCode: Int, permissions: Array<String>, grantResults:
+            IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
@@ -163,9 +173,9 @@ class MainActivity : AppCompatActivity() {
                 startCamera()
             } else {
                 Toast.makeText(
-                    this,
-                    "Permissions not granted by the user.",
-                    Toast.LENGTH_SHORT
+                        this,
+                        "Permissions not granted by the user.",
+                        Toast.LENGTH_SHORT
                 ).show()
                 finish()
             }
@@ -199,7 +209,7 @@ class MainActivity : AppCompatActivity() {
                     initProgressTimer()
                 else
                     progressTimer.start()
-                val ring: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.timer_count_down)
+                val ring: MediaPlayer = MediaPlayer.create(this@CameraActivity, R.raw.timer_count_down)
                 ring.start()
             }
 
@@ -210,7 +220,7 @@ class MainActivity : AppCompatActivity() {
             animRecordingIndicator()
             animCaptureButtonOff()
             progressTimer.pause()
-            val ring: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.sound_camera_off)
+            val ring: MediaPlayer = MediaPlayer.create(this@CameraActivity, R.raw.sound_camera_off)
             ring.start()
         }
 
@@ -254,7 +264,7 @@ class MainActivity : AppCompatActivity() {
             val millisInFuture = when (timerCountDown) {
                 1 -> 5000L
                 2 -> 10000L
-            else -> 0L
+                else -> 0L
             }
             countDownTimer.visibility = View.VISIBLE
             val timer = object : Timer(millisInFuture, 1000) {
@@ -262,7 +272,7 @@ class MainActivity : AppCompatActivity() {
                     Log.d(TAG, "onTimerTick: decompte: ${millisUntilFinished / 1000}s")
                     val sec = (millisUntilFinished / 1000).toInt()
                     countDownTimer.text = "${sec}s"
-                    val ring: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.timer_count_down)
+                    val ring: MediaPlayer = MediaPlayer.create(this@CameraActivity, R.raw.timer_count_down)
                     ring.start()
                 }
 
@@ -276,7 +286,7 @@ class MainActivity : AppCompatActivity() {
                         initProgressTimer()
                     else
                         progressTimer.start()
-                    val ring: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.sound_camera_on)
+                    val ring: MediaPlayer = MediaPlayer.create(this@CameraActivity, R.raw.sound_camera_on)
                     ring.start()
                 }
 
@@ -351,7 +361,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTimerFinish() {
                 Log.d("MainActivity", "onTimerFinish")
-                val ring: MediaPlayer = MediaPlayer.create(this@MainActivity, R.raw.sound_camera_off)
+                val ring: MediaPlayer = MediaPlayer.create(this@CameraActivity, R.raw.sound_camera_off)
                 ring.start()
             }
 
@@ -369,13 +379,22 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         cameraExecutor.shutdown()
     }
+
+
+
+    override fun onStart() {
+        overridePendingTransition(0, 0)
+        super.onStart()
+    }
+
+
     companion object {
-        private const val TAG = "CameraXBasic"
+        private const val TAG = "CameraActivity"
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private const val TIMER_DURATION = 20000L
         private const val TIMER_INTERVAL = 100L
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private const val ACTIVITY_NUM = 2
     }
 }
-
