@@ -24,6 +24,8 @@
         <activity android:name=".UI.Search.SearchActivity"/>
         <activity android:name=".UI.Camera.CameraActivity"/>
         <activity android:name=".UI.Profile.ProfileActivity"/>
+        <activity android:name=".UI.Welcome.WelcomeActivity"/>
+        <activity android:name=".UI.SignIn.SignInActivity"/>
 
     </application>
 
