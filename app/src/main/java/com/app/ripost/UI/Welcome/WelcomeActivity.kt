@@ -2,10 +2,6 @@ package com.app.ripost.UI.Welcome
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.MotionEvent
-import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ripost.R
 import com.app.ripost.UI.SignIn.SignInActivity

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+
+
+    <!-- Progression Indicator -->
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressionIndicator"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:indicatorSize="80dp"
+            android:progress="4"
+            android:max="5"
+            android:visibility="visible"
+            app:indicatorColor="@color/white"
+            app:trackThickness="3dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="🤳️‍"
+            android:textSize="35dp"/>
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Profile photo"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/work_sans_semi_bold"
+        android:textColor="@color/white"
+        android:textSize="17sp"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_box_import_photo"
+        android:layout_marginTop="50dp"
+        android:id="@+id/importBox"/>
+
+
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/bg_btn_primary"
+        android:layout_gravity="center"
+        android:text="Next"
+        android:textAllCaps="false"
+        android:fontFamily="@font/work_sans_regular"
+        android:textSize="18sp"
+        android:id="@+id/next"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Skip"
+        android:textColor="@color/placeholder"
+        android:fontFamily="@font/work_sans_medium"
+        android:textSize="15sp"
+        android:layout_marginTop="60dp"
+        android:id="@+id/login"/>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        app:indicatorColor="@color/white"
+        android:indeterminateOnly="true"
+        android:id="@+id/progress_bar"
+        app:trackThickness="1dp"
+        android:visibility="gone"/>
+
+
+</LinearLayout>
