@@ -10,6 +10,7 @@ import com.app.ripost.R
 import com.app.ripost.UI.SignUp.SignUpActivity
 import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.fragment_birthday.view.*
+import kotlinx.android.synthetic.main.snippet_toolbar.view.*
 
 class BirthdayFragment  : Fragment() {
 
@@ -20,8 +21,20 @@ class BirthdayFragment  : Fragment() {
             view.toolbar.visibility = View.GONE
             view.progressView.visibility = View.VISIBLE
         }else{
+            view.tvBirthday.visibility = View.GONE
             view.progressView.visibility = View.GONE
             view.toolbar.visibility = View.VISIBLE
+            view.toolbarText.text = "Birthday"
+
+            PushDownAnim.setPushDownAnimTo(view.back).setOnClickListener {
+                requireActivity().supportFragmentManager
+                        .beginTransaction()
+                        .remove(this)
+                        .commit()
+            }
+
+            view.skip.visibility = View.GONE
+            view.next.text = "Save"
         }
         PushDownAnim.setPushDownAnimTo(view.next).setOnClickListener{
             (activity as SignUpActivity).openProfilePhotoFragment()

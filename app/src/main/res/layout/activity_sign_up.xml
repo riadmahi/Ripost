@@ -42,7 +42,7 @@
 
 
 
-        <!-- Email Field -->
+        <!-- Username Field -->
 
         <RelativeLayout
             android:layout_width="wrap_content"

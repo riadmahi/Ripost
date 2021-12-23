@@ -98,7 +98,7 @@
         android:fontFamily="@font/work_sans_medium"
         android:textSize="15sp"
         android:layout_marginTop="60dp"
-        android:id="@+id/login"/>
+        android:id="@+id/skip"/>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:layout_width="30dp"
