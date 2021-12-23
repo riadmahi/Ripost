@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:isScrollContainer="true"
+        android:fillViewport="true"
+        android:layout_marginBottom="50dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <include layout="@layout/snippet_profile_information"/>
+
+            <com.app.ripost.Utils.ExpandableHeightGridView
+                android:id="@+id/profileGridView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:horizontalSpacing="1dp"
+                android:nestedScrollingEnabled="true"
+                android:numColumns="3"
+                android:verticalSpacing="1dp" />
+        </LinearLayout>
+    </ScrollView>
 
 
     <RelativeLayout

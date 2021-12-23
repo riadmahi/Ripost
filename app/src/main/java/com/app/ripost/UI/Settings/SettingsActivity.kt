@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.app.ripost.R
+import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.snippet_toolbar.*
 
@@ -37,6 +38,10 @@ class SettingsActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                     .add(R.id.container, UsernameFragment(), "FROM_SETTINGS")
                     .commit()
+        }
+
+        PushDownAnim.setPushDownAnimTo(back).setOnClickListener {
+            finish()
         }
     }
 

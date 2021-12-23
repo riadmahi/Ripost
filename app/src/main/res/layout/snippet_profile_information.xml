@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:paddingTop="30dp"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/linearLayout"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/profile_photo"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/bg_welcome"
+            android:scaleType="centerCrop"
+            android:padding="4dp"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Riad MAHI"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/work_sans_semi_bold"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/white"
+                    android:id="@+id/profile_displayName"/>
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/ic_edit"
+                    android:tint="@color/white"
+                    android:id="@+id/editProfile"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="riadmahi"
+                android:textSize="18sp"
+                android:fontFamily="@font/work_sans_regular"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/white"
+                android:id="@+id/profile_username"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
+        <include layout="@layout/snippet_profile_follow"/>
+    </RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Normalement ici, c'est une bio"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:id="@+id/biography"
+        android:fontFamily="@font/work_sans_regular"
+        android:visibility="visible"
+        android:textColor="@color/white"
+        android:layout_marginBottom="10dp"
+        android:textSize="14sp"/>
+
+
+
+</LinearLayout>

@@ -11,4 +11,5 @@
     <color name="background">#000</color>
     <color name="placeholder">#C9C8CC</color>
     <color name="input">#282729</color>
+    <color name="spanish_gray">#8F8F8F</color>
 </resources>
