@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ripost.R
 import com.app.ripost.UI.Home.MainActivity
+import com.app.ripost.UI.Settings.SettingsActivity
 import com.app.ripost.UI.Welcome.WelcomeActivity
 import java.util.*
 import kotlin.concurrent.timerTask
@@ -22,7 +23,7 @@ class SplashScreenActivity : AppCompatActivity() {
         val timer = Timer()
         timer.schedule(timerTask {
             Log.d(TAG, "onCreate: 1.8s done move to MainActivity.")
-            val intent = Intent(this@SplashScreenActivity, WelcomeActivity::class.java)
+            val intent = Intent(this@SplashScreenActivity, SettingsActivity::class.java)
             startActivity(intent)
             finish()
         }, 1800)

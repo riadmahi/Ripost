@@ -7,12 +7,20 @@
     android:background="@color/background">
 
 
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar">
+        <include layout="@layout/snippet_toolbar"/>
+    </RelativeLayout>
     <!-- Progression Indicator -->
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
+        android:id="@+id/progressView"
+        android:visibility="gone"
         android:layout_height="wrap_content">
 
         <com.google.android.material.progressindicator.CircularProgressIndicator

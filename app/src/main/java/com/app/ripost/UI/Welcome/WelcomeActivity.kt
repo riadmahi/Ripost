@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ripost.R
 import com.app.ripost.UI.SignIn.SignInActivity
+import com.app.ripost.UI.SignUp.SignUpActivity
 import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.activity_welcome.*
 
@@ -19,7 +20,8 @@ class WelcomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
         PushDownAnim.setPushDownAnimTo(signUp).setOnClickListener {
-
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
         }
     }
 

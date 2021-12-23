@@ -26,6 +26,8 @@
         <activity android:name=".UI.Profile.ProfileActivity"/>
         <activity android:name=".UI.Welcome.WelcomeActivity"/>
         <activity android:name=".UI.SignIn.SignInActivity"/>
+        <activity android:name=".UI.SignUp.SignUpActivity"/>
+        <activity android:name=".UI.Settings.SettingsActivity"/>
 
     </application>
 
