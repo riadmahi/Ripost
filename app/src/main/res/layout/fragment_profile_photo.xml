@@ -63,6 +63,13 @@
         android:layout_marginTop="50dp"
         android:id="@+id/importBox"/>
 
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/imageView"
+        android:visibility="gone"/>
+
 
 
 

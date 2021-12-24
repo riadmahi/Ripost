@@ -5,6 +5,8 @@
     <uses-feature android:name="android.hardware.camera.any" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
 
     <application
         android:allowBackup="true"
@@ -13,22 +15,23 @@
         android:roundIcon="@drawable/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ripost">
-        <activity android:name=".UI.SplashScreen.SplashScreenActivity">
+        <activity android:name=".ui.splashScreen.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".UI.Home.MainActivity"/>
-        <activity android:name=".UI.Notification.NotificationActivity"/>
-        <activity android:name=".UI.Search.SearchActivity"/>
-        <activity android:name=".UI.Camera.CameraActivity"/>
-        <activity android:name=".UI.Profile.ProfileActivity"/>
-        <activity android:name=".UI.Welcome.WelcomeActivity"/>
-        <activity android:name=".UI.SignIn.SignInActivity"/>
-        <activity android:name=".UI.SignUp.SignUpActivity"/>
-        <activity android:name=".UI.Settings.SettingsActivity"/>
+        <activity android:name=".ui.home.MainActivity"/>
+        <activity android:name=".ui.notification.NotificationActivity"/>
+        <activity android:name=".ui.search.SearchActivity"/>
+        <activity android:name=".ui.camera.CameraActivity"/>
+        <activity android:name=".ui.profile.ProfileActivity"/>
+        <activity android:name=".ui.welcome.WelcomeActivity"/>
+        <activity android:name=".ui.signIn.SignInActivity"/>
+        <activity android:name=".ui.signUp.SignUpActivity"/>
+        <activity android:name=".ui.settings.SettingsActivity"/>
+        <activity android:name=".ui.camera.UploadActivity"/>
 
     </application>
 

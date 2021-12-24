@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <!-- Search Input -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_rounded_input"
+        android:id="@+id/searchInput"
+        android:layout_margin="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:text="Search friends, groups, videos"
+            android:fontFamily="@font/work_sans_regular"
+            android:textSize="15sp"
+            android:textColor="@color/placeholder"/>
+    </RelativeLayout>
+
+
+
+
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -8,5 +34,10 @@
         android:layout_alignParentBottom="true">
         <include layout="@layout/layout_bottom_navigation"/>
     </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/container"/>
 
 </RelativeLayout>

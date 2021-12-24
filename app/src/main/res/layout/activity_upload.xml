@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <include layout="@layout/snippet_toolbar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="180dp"
+            android:id="@+id/thumbnail"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Describe your video"
+            android:fontFamily="@font/work_sans_regular"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textColorHint="@color/placeholder"
+            android:id="@+id/description"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_bottom_line"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_lock_line"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Private (Only for your friends)"
+            android:fontFamily="@font/work_sans_regular"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:layout_marginStart="5dp"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="15dp"
+            android:thumb="@drawable/custom_thumb"
+            app:track="@drawable/custom_track"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_bottom_line"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_comment"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Authorize comments"
+            android:fontFamily="@font/work_sans_regular"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:layout_marginStart="5dp"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="15dp"
+            android:checked="true"
+            android:thumb="@drawable/custom_thumb"
+            app:track="@drawable/custom_track"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_bottom_line"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_share"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="15dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="Authorize people to share"
+            android:fontFamily="@font/work_sans_regular"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:layout_marginStart="5dp"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="15dp"
+            android:checked="true"
+            android:thumb="@drawable/custom_thumb"
+            app:track="@drawable/custom_track"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

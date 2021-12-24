@@ -17,7 +17,7 @@
             android:orientation="vertical">
             <include layout="@layout/snippet_profile_information"/>
 
-            <com.app.ripost.Utils.ExpandableHeightGridView
+            <com.app.ripost.utils.ExpandableHeightGridView
                 android:id="@+id/profileGridView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
