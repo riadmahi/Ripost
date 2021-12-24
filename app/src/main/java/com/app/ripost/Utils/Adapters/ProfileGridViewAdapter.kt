@@ -34,10 +34,12 @@ class ProfileGridViewAdapter (val photos: MutableList<String>, context: Context)
             mView = LayoutInflater.from(mContext).inflate(R.layout.layout_item_profile_card_video_thumbnail, viewGroup, false)
         }
         val imageView: ImageView = mView!!.findViewById(R.id.thumbnail)
+        imageView.scaleType = ImageView.ScaleType.FIT_XY
         Glide.with(mContext)
                 .asBitmap()
                 .load(photos[i])
                 .into(imageView)
+
 
 
         return mView
