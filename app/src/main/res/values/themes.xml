@@ -23,4 +23,8 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">45%</item>
     </style>
+
+    <style name="MyDialog" parent="Base.Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>

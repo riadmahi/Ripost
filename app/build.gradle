@@ -64,4 +64,8 @@ dependencies {
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
 
+    implementation "com.writingminds:FFmpegAndroid:0.3.2"
+
+
+
 }

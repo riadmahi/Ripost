@@ -75,6 +75,15 @@
             </RelativeLayout>
 
 
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/myMoments"
+                android:src="@drawable/ic_gallery"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone"
+                android:layout_margin="50dp"/>
+
             <!-- ProgressBar -->
             <ProgressBar
                 android:layout_width="match_parent"
@@ -132,10 +141,6 @@
     </RelativeLayout>
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/container"/>
 
 
 </RelativeLayout>

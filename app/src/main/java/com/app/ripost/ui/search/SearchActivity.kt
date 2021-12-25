@@ -9,7 +9,6 @@ import com.app.ripost.R
 import com.app.ripost.utils.BottomNavigationHelper
 import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.android.synthetic.main.fragment_preview.*
 import kotlinx.android.synthetic.main.layout_bottom_navigation.*
 
 class SearchActivity: AppCompatActivity() {

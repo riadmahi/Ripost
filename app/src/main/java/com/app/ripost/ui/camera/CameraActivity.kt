@@ -2,11 +2,13 @@ package com.app.ripost.ui.camera
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Animatable2
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,24 +16,22 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.Camera
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.FocusMeteringAction
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat.registerAnimationCallback
 import com.app.ripost.R
-import com.app.ripost.ui.search.SearchFragment
 import com.app.ripost.utils.BottomNavigationHelper
 import com.app.ripost.utils.DoubleClickListener
 import com.app.ripost.utils.Timer
+import com.app.ripost.utils.VideoUtils
 import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.activity_camera.*
 import kotlinx.android.synthetic.main.layout_bottom_navigation.*
 import kotlinx.android.synthetic.main.snippet_camera_widgets.*
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -44,13 +44,17 @@ class CameraActivity : AppCompatActivity(){
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var camera: Camera
 
+
     //VAR
     private var isRecording = false
     private var cameraFacing = 0
     private var currentProgress = 0
     private var timerCountDown = 0
 
+    private val videoCapture = VideoCapture.Builder().build()
 
+    //List of video file (already record)
+    private var mVideos : MutableList<File> = mutableListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +63,7 @@ class CameraActivity : AppCompatActivity(){
         //Camera facing selector
         // Request camera permissions
 
+        myMoments.visibility = View.VISIBLE
         setupBottomNavigation()
         if (allPermissionsGranted()) {
             startCamera()
@@ -75,9 +80,20 @@ class CameraActivity : AppCompatActivity(){
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         PushDownAnim.setPushDownAnimTo(btnFinishRecord).setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                    .add(R.id.container, PreviewFragment(), "CAMERA")
-                    .commit()
+            if(mVideos.size > 0) {
+                if (mVideos.size != 1) {
+                    VideoUtils().mergeVideos(this, mVideos, mVideos[0])
+                }
+                val intent = Intent(this, PreviewActivity::class.java).putExtra("EXTRA_VIDEO", mVideos[0].path)
+                startActivity(intent)
+            }else{
+                Toast.makeText(this, "Error, please reattempt.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        myMoments.setOnClickListener {
+            val bottomSheet = MyMomentsBottomSheet()
+            bottomSheet.show(supportFragmentManager, "")
         }
     }
 
@@ -89,7 +105,6 @@ class CameraActivity : AppCompatActivity(){
         menuItem.isChecked = true
     }
 
-    private fun takePhoto() {}
 
     @SuppressLint("ClickableViewAccessibility")
     private fun startCamera() {
@@ -116,7 +131,7 @@ class CameraActivity : AppCompatActivity(){
 
                 // Bind use cases to camera
                 camera = cameraProvider.bindToLifecycle(
-                        this, cameraSelector, preview
+                        this, cameraSelector, preview, videoCapture
                 )
 
                 val listener = object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
@@ -184,12 +199,13 @@ class CameraActivity : AppCompatActivity(){
             if (allPermissionsGranted()) {
                 startCamera()
             } else {
+                allPermissionsGranted()
                 Toast.makeText(
                         this,
                         "Permissions not granted by the user.",
                         Toast.LENGTH_SHORT
                 ).show()
-                finish()
+                //finish()
             }
         }
     }
@@ -210,10 +226,11 @@ class CameraActivity : AppCompatActivity(){
 
         camera_capture_button.setOnClickListener {
             Log.d(TAG, "onCreate: capture btn clicked")
+            myMoments.visibility = View.GONE
             setCountDownTimer()
             if(timerCountDown == 0){
                 countDownTimer.visibility = View.GONE
-                takePhoto()
+                startRecording()
                 animCaptureButtonOn()
                 isRecording = true
                 animRecordingIndicator()
@@ -232,6 +249,7 @@ class CameraActivity : AppCompatActivity(){
             animRecordingIndicator()
             animCaptureButtonOff()
             progressTimer.pause()
+            stopRecording()
             val ring: MediaPlayer = MediaPlayer.create(this@CameraActivity, R.raw.sound_camera_off)
             ring.start()
         }
@@ -290,7 +308,7 @@ class CameraActivity : AppCompatActivity(){
 
                 override fun onTimerFinish() {
                     countDownTimer.visibility = View.GONE
-                    takePhoto()
+                    startRecording()
                     animCaptureButtonOn()
                     isRecording = true
                     animRecordingIndicator()
@@ -306,6 +324,41 @@ class CameraActivity : AppCompatActivity(){
             timer.start()
         }
     }
+
+    /**
+     * Record a video
+     *
+     */
+
+    @SuppressLint("RestrictedApi")
+    private fun startRecording() {
+        val videoFile = File(
+                outputDirectory,
+                SimpleDateFormat(FILENAME_FORMAT, Locale.US
+                ).format(System.currentTimeMillis()) + ".mp4")
+        val outputOptions = VideoCapture.OutputFileOptions.Builder(videoFile).build()
+
+        videoCapture.startRecording(outputOptions, ContextCompat.getMainExecutor(this), object: VideoCapture.OnVideoSavedCallback {
+            override fun onError(videoCaptureError: Int, message: String, cause: Throwable?) {
+                Log.e(TAG, "Video capture failed: $message")
+            }
+
+            override fun onVideoSaved(outputFileResults: VideoCapture.OutputFileResults) {
+                val savedUri = Uri.fromFile(videoFile)
+                val msg = "Video capture succeeded: $savedUri"
+                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                Log.d(TAG, msg)
+                mVideos.add(videoFile)
+            }
+        })
+    }
+
+    @SuppressLint("RestrictedApi")
+    private fun stopRecording() {
+        videoCapture.stopRecording()
+    }
+
+
 
     /**
      *                           Record Animation
@@ -392,6 +445,7 @@ class CameraActivity : AppCompatActivity(){
                 ring.start()
                 isRecording = false
                 animRecordingIndicator()
+                stopRecording()
             }
 
         }
@@ -420,10 +474,10 @@ class CameraActivity : AppCompatActivity(){
     companion object {
         private const val TAG = "CameraActivity"
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
-        private const val REQUEST_CODE_PERMISSIONS = 10
+        private const val REQUEST_CODE_PERMISSIONS = 100
         private const val TIMER_DURATION = 20000L
         private const val TIMER_INTERVAL = 100L
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
         private const val ACTIVITY_NUM = 2
     }
 }
