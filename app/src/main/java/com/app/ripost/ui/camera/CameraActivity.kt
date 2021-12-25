@@ -3,7 +3,9 @@ package com.app.ripost.ui.camera
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.drawable.Animatable2
 import android.graphics.drawable.AnimatedVectorDrawable
+import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -19,10 +21,13 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat.registerAnimationCallback
 import com.app.ripost.R
+import com.app.ripost.ui.search.SearchFragment
 import com.app.ripost.utils.BottomNavigationHelper
 import com.app.ripost.utils.DoubleClickListener
 import com.app.ripost.utils.Timer
+import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.activity_camera.*
 import kotlinx.android.synthetic.main.layout_bottom_navigation.*
 import kotlinx.android.synthetic.main.snippet_camera_widgets.*
@@ -30,6 +35,7 @@ import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+
 
 class CameraActivity : AppCompatActivity(){
     //WIDGETS
@@ -67,6 +73,12 @@ class CameraActivity : AppCompatActivity(){
         outputDirectory = getOutputDirectory()
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+        PushDownAnim.setPushDownAnimTo(btnFinishRecord).setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                    .add(R.id.container, PreviewFragment(), "CAMERA")
+                    .commit()
+        }
     }
 
     private fun setupBottomNavigation(){
@@ -329,16 +341,31 @@ class CameraActivity : AppCompatActivity(){
             avd_record_indicator.setImageResource(R.drawable.avd_record_off)
             val shapeTransformation = avd_record_indicator.drawable as AnimatedVectorDrawable
             shapeTransformation.start()
+            recordAnim.visibility = View.GONE
             avd_record_indicator.visibility = View.GONE
+
             camera_capture_button.visibility = View.VISIBLE
+            btnFinishRecord.visibility = View.VISIBLE
         }else{
             Log.d(TAG, "animRecordingIndicator: show record indicator")
+
+            btnFinishRecord.visibility = View.GONE
             camera_capture_button.visibility = View.GONE
             avd_record_indicator.setImageResource(R.drawable.avd_record_on)
             avd_record_indicator.visibility = View.VISIBLE
+            recordAnim.visibility = View.VISIBLE
+            val shapeTransformation2 = recordAnim.drawable as AnimatedVectorDrawable
 
             val shapeTransformation = avd_record_indicator.drawable as AnimatedVectorDrawable
             shapeTransformation.start()
+
+            shapeTransformation2.registerAnimationCallback(object : Animatable2.AnimationCallback() {
+                override fun onAnimationEnd(drawable: Drawable) {
+                    shapeTransformation2.start()
+                }
+            })
+            shapeTransformation2.start()
+
         }
     }
 
@@ -363,6 +390,8 @@ class CameraActivity : AppCompatActivity(){
                 Log.d("MainActivity", "onTimerFinish")
                 val ring: MediaPlayer = MediaPlayer.create(this@CameraActivity, R.raw.sound_camera_off)
                 ring.start()
+                isRecording = false
+                animRecordingIndicator()
             }
 
         }

@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ripost.R
-import com.app.ripost.ui.camera.UploadActivity
-import com.app.ripost.ui.home.MainActivity
-import com.app.ripost.ui.signIn.SignInActivity
-import com.app.ripost.ui.signUp.SignUpActivity
+import com.app.ripost.ui.camera.CameraActivity
 import java.util.*
 import kotlin.concurrent.timerTask
 
@@ -24,7 +21,7 @@ class SplashScreenActivity : AppCompatActivity() {
         val timer = Timer()
         timer.schedule(timerTask {
             Log.d(TAG, "onCreate: 1.8s done move to MainActivity.")
-            val intent = Intent(this@SplashScreenActivity, UploadActivity::class.java)
+            val intent = Intent(this@SplashScreenActivity, CameraActivity::class.java)
             startActivity(intent)
             finish()
         }, 1200)
