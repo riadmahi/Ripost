@@ -82,10 +82,20 @@ class CameraActivity : AppCompatActivity(){
         PushDownAnim.setPushDownAnimTo(btnFinishRecord).setOnClickListener {
             if(mVideos.size > 0) {
                 if (mVideos.size != 1) {
-                    VideoUtils().mergeVideos(this, mVideos, mVideos[0])
+                    VideoUtils().mergeVideos(this, mVideos)
+
+                }else {
+                    Log.d(TAG, "onCreate: absolute path: ${mVideos[0].absolutePath}")
+                    btnFinishRecord.visibility = View.GONE
+                    progressBar.progress = 0
+                    currentProgress = 0
+                    val intent = Intent(this, PreviewActivity::class.java).putExtra(
+                        "EXTRA_VIDEO",
+                        mVideos[0].absolutePath
+                    )
+                    mVideos.clear()
+                    startActivity(intent)
                 }
-                val intent = Intent(this, PreviewActivity::class.java).putExtra("EXTRA_VIDEO", mVideos[0].path)
-                startActivity(intent)
             }else{
                 Toast.makeText(this, "Error, please reattempt.", Toast.LENGTH_SHORT).show()
             }
@@ -105,6 +115,14 @@ class CameraActivity : AppCompatActivity(){
         menuItem.isChecked = true
     }
 
+    fun startPreviewActivity(){
+        btnFinishRecord.visibility = View.GONE
+        progressBar.progress = 0
+        currentProgress = 0
+        val intent = Intent(this, PreviewActivity::class.java).putExtra("EXTRA_VIDEO", mVideos[0].absolutePath)
+        mVideos.clear()
+        startActivity(intent)
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun startCamera() {
@@ -170,6 +188,16 @@ class CameraActivity : AppCompatActivity(){
         }, ContextCompat.getMainExecutor(this))
 
 
+    }
+
+    fun showMergeProgression(){
+        cardView.visibility = View.GONE
+        progress_bar.visibility = View.VISIBLE
+    }
+
+    fun hideMergeProgression(){
+        progress_bar.visibility = View.GONE
+        cardView.visibility = View.VISIBLE
     }
 
 

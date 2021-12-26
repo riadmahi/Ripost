@@ -20,6 +20,7 @@
         android:background="@drawable/bg_item_bottom_sheet"
         android:focusable="true"
         android:clickable="true"
+        android:id="@+id/cancel"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginTop="25dp">
@@ -42,6 +43,7 @@
         android:background="@drawable/bg_item_bottom_sheet"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
+        android:id="@+id/restart"
         android:focusable="true"
         android:clickable="true"
         android:layout_marginTop="10dp">
@@ -68,6 +70,7 @@
         android:layout_marginBottom="30dp"
         android:focusable="true"
         android:clickable="true"
+        android:id="@+id/removeVideo"
         android:layout_marginTop="10dp">
 
         <TextView
