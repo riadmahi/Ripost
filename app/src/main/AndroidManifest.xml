@@ -36,6 +36,7 @@
         <activity android:name=".ui.settings.SettingsActivity"/>
         <activity android:name=".ui.camera.UploadActivity"/>
         <activity android:name=".ui.camera.PreviewActivity"/>
+        <activity android:name=".ui.profile.ViewProfileActivity"/>
 
     </application>
 

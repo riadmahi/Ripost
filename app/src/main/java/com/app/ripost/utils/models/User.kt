@@ -1,5 +1,9 @@
 package com.app.ripost.utils.models
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 class User(val uid: String,
            val username: String,
            val displayName: String,
@@ -13,7 +17,7 @@ class User(val uid: String,
            val posts: Int,
            val certified: Boolean,
            val private: Boolean,
-           val token: String){
+           val token: String): Parcelable{
     constructor() : this("", "", "", "", "", "", "", "", 0,
         0,0,false, false, "")
 }

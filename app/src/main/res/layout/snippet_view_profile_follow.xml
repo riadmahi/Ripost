@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@color/background"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="25dp"
+        android:background="@drawable/bg_btn_send_message"
+        android:layout_gravity="center"
+        android:id="@+id/sendMessage">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_send_outline"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_btn_primary"
+        android:layout_gravity="center"
+        android:text="@string/button_follow"
+        android:textAllCaps="false"
+        android:fontFamily="@font/work_sans_medium"
+        android:textSize="16sp"
+        android:id="@+id/follow"/>
+
+
+</LinearLayout>

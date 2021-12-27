@@ -24,11 +24,29 @@
     <string name="text_profile_photo">Profile Photo</string>
     <string name="text_biography">Biography</string>
 
-    <string name="hint_biography">Describe the video creator in your head... (150 words)</string>
+    <string name="settings_profile_information">PROFILE INFORMATION</string>
+    <string name="settings_username">Username</string>
+    <string name="settings_display_name">Display name</string>
+    <string name="settings_profile_photo">Profile photo</string>
+    <string name="settings_biography">Biography</string>
+    <string name="settings_personal_information">PERSONAL INFORMATION</string>
+    <string name="settings_email">Email</string>
+    <string name="settings_password">Password</string>
+    <string name="settings_account_visibility">Account visibility</string>
+    <string name="settings_birthday">Birthday</string>
+    <string name="settings_log_out">Log out</string>
 
+    <string name="item_search_followers">Followers</string>
 
+    <string name="search_users">Users</string>
+
+    <string name="hint_biography">Describe the video creator in your head… (150 words)</string>
     <string name="img_description">img description</string>
+    <string name="load_more_results">Load more results</string>
 
+    <string name="button_follow">Follow</string>
+    <string name="button_un_follow">UnFollow</string>
+    <!-- DATABASE -->
     <string name="dbname_users">Users</string>
     <string name="dbname_posts">Posts</string>
     <string name="field_username">username</string>

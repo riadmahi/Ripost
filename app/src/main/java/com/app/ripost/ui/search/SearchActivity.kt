@@ -1,12 +1,15 @@
 package com.app.ripost.ui.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ripost.R
+import com.app.ripost.ui.profile.ViewProfileActivity
 import com.app.ripost.utils.BottomNavigationHelper
+import com.app.ripost.utils.models.User
 import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.layout_bottom_navigation.*
@@ -31,6 +34,11 @@ class SearchActivity: AppCompatActivity() {
         val menu: Menu = bottom_navigation.menu
         val menuItem: MenuItem = menu.getItem(ACTIVITY_NUM)
         menuItem.isChecked = true
+    }
+
+    fun openViewProfile(user: User){
+        val intent = Intent(this, ViewProfileActivity::class.java).putExtra("EXTRA_USER", user)
+        startActivity(intent)
     }
 
     override fun onStart() {

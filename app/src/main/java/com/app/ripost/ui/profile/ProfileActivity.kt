@@ -76,6 +76,7 @@ class ProfileActivity: AppCompatActivity() {
                         .into(profile_photo)
 
                 }
+                biography.text = user.biography
             }
         })
 

@@ -123,6 +123,26 @@ class FirebaseMethods(private val context: Context) {
         }
     }
 
+
+
+
+    fun getCorrespondingUsersByUsername(username: String, callback: FirebaseRetrieveUserCallback){
+        db.collection(context.getString(R.string.dbname_users))
+            .whereGreaterThanOrEqualTo(context.getString(R.string.field_username), username)
+            .whereLessThanOrEqualTo(context.getString(R.string.field_username), "$username\uF7FF")
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val user = document.toObject(User::class.java)
+                    callback.onFinish(user)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+            }
+
+    }
+
     companion object{
         private const val TAG = "FirebaseMethods"
     }
