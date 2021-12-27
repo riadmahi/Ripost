@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "638768725687",
+    "project_id": "ripost",
+    "storage_bucket": "ripost.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:638768725687:android:1f5d5456a6f69bdc8e5732",
+        "android_client_info": {
+          "package_name": "com.app.ripost"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "638768725687-qhlr98jjg08vckdo9k730iu2va5j4tf5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.ripost",
+            "certificate_hash": "2023624846c780afe56ed16d1a69e210cfed22ca"
+          }
+        },
+        {
+          "client_id": "638768725687-eb9m6o4efijdrdh1oevd3vhu3u1bdpn6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjtj2j_urk7hZfq_HKJ2f1pJp_Wacrg28"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "638768725687-eb9m6o4efijdrdh1oevd3vhu3u1bdpn6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

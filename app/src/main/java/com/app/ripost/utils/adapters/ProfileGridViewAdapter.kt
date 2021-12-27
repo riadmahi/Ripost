@@ -28,7 +28,7 @@ class ProfileGridViewAdapter (val photos: MutableList<String>, context: Context)
 
 
     @SuppressLint("ViewHolder")
-    override fun getView(i: Int, view: View?, viewGroup: ViewGroup?): View? {
+    override fun getView(i: Int, view: View?, viewGroup: ViewGroup?): View {
         var mView = view
         if(mView == null) {
             mView = LayoutInflater.from(mContext).inflate(R.layout.layout_item_profile_card_video_thumbnail, viewGroup, false)

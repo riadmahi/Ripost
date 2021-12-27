@@ -1,3 +1,42 @@
 <resources>
     <string name="app_name">Ripost</string>
+
+    <string name="sign_in_email">Email</string>
+    <string name="sign_in_password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="button_sign_in">Sign in</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="reset_my_password">Reset my password</string>
+
+
+    <string name="button_sign_up">Sign Up</string>
+    <string name="already_an_account">I have already an account!</string>
+    <string name="input_username">Username</string>
+    <string name="emoji_hello">👋</string>
+    <string name="emoji_inspector">🕵</string>
+    <string name="emoji_party">🥳️</string>
+    <string name="input_display_name">Display name</string>
+    <string name="skip">skip</string>
+    <string name="button_next">Next</string>
+    <string name="text_birthday">Birthday</string>
+
+
+    <string name="img_description">img description</string>
+
+    <string name="dbname_users">Users</string>
+    <string name="dbname_posts">Posts</string>
+    <string name="field_username">username</string>
+    <string name="field_display_name">displayName</string>
+    <string name="field_email">email</string>
+    <string name="field_birthday">birthday</string>
+    <string name="field_private">private</string>
+    <string name="field_uid">uid</string>
+    <string name="field_date_created">dateCreated</string>
+    <string name="field_following">following</string>
+    <string name="field_followers">followers</string>
+    <string name="field_posts">posts</string>
+    <string name="field_certified">certified</string>
+    <string name="field_token">token</string>
+    <string name="field_biography">biography</string>
+    <string name="field_photo_url">photoUrl</string>
 </resources>

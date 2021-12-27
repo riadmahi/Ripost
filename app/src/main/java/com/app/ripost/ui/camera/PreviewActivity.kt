@@ -56,7 +56,7 @@ class PreviewActivity : AppCompatActivity() {
         videoPath = videoFile + ""
         Log.d(TAG, "onCreate: file path: $videoFile")
         videoView.setVideoURI(Uri.fromFile(File(videoFile!!)))
-        videoView.setOnPreparedListener { it ->
+        videoView.setOnPreparedListener {
             it.isLooping = true
         }
         videoView.start()

@@ -82,7 +82,7 @@ class CameraActivity : AppCompatActivity(){
         PushDownAnim.setPushDownAnimTo(btnFinishRecord).setOnClickListener {
             if(mVideos.size > 0) {
                 if (mVideos.size != 1) {
-                    VideoUtils().mergeVideos(this, mVideos)
+                    VideoUtils().concatenateVideos(this, mVideos)
 
                 }else {
                     Log.d(TAG, "onCreate: absolute path: ${mVideos[0].absolutePath}")
@@ -266,8 +266,6 @@ class CameraActivity : AppCompatActivity(){
                     initProgressTimer()
                 else
                     progressTimer.start()
-                val ring: MediaPlayer = MediaPlayer.create(this@CameraActivity, R.raw.timer_count_down)
-                ring.start()
             }
 
         }
@@ -278,8 +276,6 @@ class CameraActivity : AppCompatActivity(){
             animCaptureButtonOff()
             progressTimer.pause()
             stopRecording()
-            val ring: MediaPlayer = MediaPlayer.create(this@CameraActivity, R.raw.sound_camera_off)
-            ring.start()
         }
 
         btnCameraSelected.setOnClickListener {
@@ -344,8 +340,7 @@ class CameraActivity : AppCompatActivity(){
                         initProgressTimer()
                     else
                         progressTimer.start()
-                    val ring: MediaPlayer = MediaPlayer.create(this@CameraActivity, R.raw.sound_camera_on)
-                    ring.start()
+
                 }
 
             }
@@ -469,11 +464,28 @@ class CameraActivity : AppCompatActivity(){
 
             override fun onTimerFinish() {
                 Log.d("MainActivity", "onTimerFinish")
-                val ring: MediaPlayer = MediaPlayer.create(this@CameraActivity, R.raw.sound_camera_off)
-                ring.start()
                 isRecording = false
                 animRecordingIndicator()
                 stopRecording()
+                if(mVideos.size > 0) {
+                    if (mVideos.size != 1) {
+                        VideoUtils().concatenateVideos(this@CameraActivity, mVideos)
+
+                    }else {
+                        Log.d(TAG, "onCreate: absolute path: ${mVideos[0].absolutePath}")
+                        btnFinishRecord.visibility = View.GONE
+                        progressBar.progress = 0
+                        currentProgress = 0
+                        val intent = Intent(this@CameraActivity, PreviewActivity::class.java).putExtra(
+                                "EXTRA_VIDEO",
+                                mVideos[0].absolutePath
+                        )
+                        mVideos.clear()
+                        startActivity(intent)
+                    }
+                }else{
+                    Toast.makeText(this@CameraActivity, "Error, please reattempt.", Toast.LENGTH_SHORT).show()
+                }
             }
 
         }

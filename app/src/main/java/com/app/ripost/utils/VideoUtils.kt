@@ -14,12 +14,10 @@ import java.io.File
 
 class VideoUtils{
 
-    fun mergeVideos(context: Context, mVideos: MutableList<File>){
+    fun concatenateVideos(context: Context, mVideos: MutableList<File>){
 
 
         for(i in 1 until mVideos.size){
-            Log.d(TAG, "mergeVideos: file 0 : file://${mVideos[0].path}")
-            Log.d(TAG, "mergeVideos: file 1 : file://${mVideos[1].path}")
             val cmd = arrayOf(
                 "-y",
                 "-i",
@@ -36,7 +34,6 @@ class VideoUtils{
                 "[a]",
                 mVideos[0].path
             )
-
 
             /**
              *
@@ -71,7 +68,6 @@ class VideoUtils{
                         for (j in 1 until mVideos.size) {
                             mVideos[j].delete()
                         }
-
                         (context as CameraActivity).startPreviewActivity()
                     }
 

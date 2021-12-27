@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.snippet_video_reaction.view.*
 
 class VideoFragment(video: String) : Fragment() {
     @SuppressLint("RestrictedApi")
+
     private var mPlayer: Player? = null
     private lateinit var playerView: PlayerView
     private var isLiked = false

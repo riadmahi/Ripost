@@ -34,8 +34,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="👋"
-                android:textSize="35dp"/>
+                android:text="@string/emoji_hello"
+                android:textSize="35sp"/>
 
 
         </RelativeLayout>
@@ -56,6 +56,7 @@
                 android:elevation="2dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="15dp"
+                android:contentDescription="@string/img_description"
                 android:src="@drawable/ic_mail"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="350dp"
@@ -67,7 +68,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Username"
+                    android:hint="@string/input_username"
                     android:maxLines="1"
                     android:fontFamily="@font/work_sans_regular"
                     android:textColorHint="@color/white"
@@ -82,6 +83,18 @@
             </com.google.android.material.textfield.TextInputLayout>
 
         </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginTop="5dp"
+            android:text=""
+            android:fontFamily="@font/work_sans_regular"
+            android:textColor="@color/error"
+            android:id="@+id/usernameError"
+            android:visibility="gone"/>
         <!-- Email Field -->
 
         <com.google.android.material.textfield.TextInputLayout
@@ -96,7 +109,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Email"
+                android:hint="@string/sign_in_email"
                 android:maxLines="1"
                 android:fontFamily="@font/work_sans_regular"
                 android:textColorHint="@color/white"
@@ -126,7 +139,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Password"
+                android:hint="@string/sign_in_password"
                 android:maxLines="1"
                 android:fontFamily="@font/work_sans_regular"
                 android:textColorHint="@color/white"
@@ -149,7 +162,7 @@
             android:layout_marginTop="50dp"
             android:background="@drawable/bg_btn_primary"
             android:layout_gravity="center"
-            android:text="Sign up"
+            android:text="@string/button_sign_up"
             android:textAllCaps="false"
             android:fontFamily="@font/work_sans_regular"
             android:textSize="18sp"
@@ -159,7 +172,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="I've already an account!"
+            android:text="@string/already_an_account"
             android:textColor="@color/placeholder"
             android:fontFamily="@font/work_sans_medium"
             android:textSize="15sp"
