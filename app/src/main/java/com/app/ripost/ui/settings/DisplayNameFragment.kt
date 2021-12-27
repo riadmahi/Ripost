@@ -40,7 +40,8 @@ class DisplayNameFragment : Fragment() {
             view.progress_bar.visibility = View.VISIBLE
             FirebaseMethods(requireContext()).updateDisplayName(view.displayName.text.toString())
             view.progress_bar.visibility = View.GONE
-            (activity as SignUpActivity).openBirthdayFragment()
+            if(tag == "FROM_SIGN_UP")
+                (activity as SignUpActivity).openBirthdayFragment()
         }
         PushDownAnim.setPushDownAnimTo(view.skip).setOnClickListener {
             (activity as SignUpActivity).openBirthdayFragment()

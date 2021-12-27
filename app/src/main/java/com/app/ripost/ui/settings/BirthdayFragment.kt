@@ -44,16 +44,24 @@ class BirthdayFragment  : Fragment() {
             view.next.text = "Save"
         }
         PushDownAnim.setPushDownAnimTo(view.next).setOnClickListener{
+            view.progress_bar.visibility = View.VISIBLE
             val age = getAge(datePicker.year, datePicker.month, datePicker.dayOfMonth)
             Log.d(TAG, "onCreate: age found = $age")
             if(age >= 13) {
+                if(age<16)
+                    FirebaseMethods(requireContext()).updatePrivate(true)
                 val date = ""+datePicker.year+"-"+datePicker.month+"-"+datePicker.dayOfMonth
                 FirebaseMethods(requireContext()).updateBirthday(date)
-                (activity as SignUpActivity).openProfilePhotoFragment()
+                if(tag == "FROM_SIGN_UP")
+                    (activity as SignUpActivity).openProfilePhotoFragment()
             }else{
                 Toast.makeText(requireActivity(), "You must be older than 13.", Toast.LENGTH_SHORT).show()
             }
+            view.progress_bar.visibility = View.GONE
 
+        }
+        view.skip.setOnClickListener {
+            (activity as SignUpActivity).openProfilePhotoFragment()
         }
         return view
     }

@@ -1,5 +1,6 @@
 package com.app.ripost.ui.profile
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,11 @@ import com.app.ripost.R
 import com.app.ripost.ui.settings.SettingsActivity
 import com.app.ripost.utils.adapters.ProfileGridViewAdapter
 import com.app.ripost.utils.BottomNavigationHelper
+import com.app.ripost.utils.database.FirebaseCallback
+import com.app.ripost.utils.database.FirebaseMethods
+import com.app.ripost.utils.database.FirebaseRetrieveUserCallback
+import com.app.ripost.utils.models.User
+import com.bumptech.glide.Glide
 import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.layout_bottom_navigation.*
@@ -25,6 +31,7 @@ class ProfileActivity: AppCompatActivity() {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
         }
+        setupUserInformation()
         val photos : MutableList<String> = mutableListOf()
         photos.add("https://images.unsplash.com/photo-1640289753542-b02666f4a664?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60")
         photos.add("https://images.unsplash.com/photo-1639999629202-85a8f62d4a18?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDMyfHFQWXNEenZKT1ljfHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=500&q=60")
@@ -54,6 +61,24 @@ class ProfileActivity: AppCompatActivity() {
         profileGridView.isExpanded = true
         val mPhotoGridViewAdapter = ProfileGridViewAdapter(photos, this)
         //profileGridView.adapter = mPhotoGridViewAdapter
+    }
+    private fun setupUserInformation(){
+        //Retrieve user data
+        FirebaseMethods(this).getUserInformation(object: FirebaseRetrieveUserCallback{
+            @SuppressLint("SetTextI18n")
+            override fun onFinish(user: User) {
+                username.text = "@${user.username}"
+                displayName.text = user.displayName
+                if (user.photoUrl != ""){
+                    Glide.with(this@ProfileActivity)
+                        .load(user.photoUrl)
+                        .centerCrop()
+                        .into(profile_photo)
+
+                }
+            }
+        })
+
     }
 
     private fun setupBottomNavigation(){

@@ -13,5 +13,7 @@ class User(val uid: String,
            val posts: Int,
            val certified: Boolean,
            val private: Boolean,
-           val token: String
-)
+           val token: String){
+    constructor() : this("", "", "", "", "", "", "", "", 0,
+        0,0,false, false, "")
+}

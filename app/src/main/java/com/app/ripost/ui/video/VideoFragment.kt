@@ -18,7 +18,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.DataSource
 import kotlinx.android.synthetic.main.snippet_video_reaction.view.*
 
-class VideoFragment(video: String) : Fragment() {
+class VideoFragment() : Fragment() {
     @SuppressLint("RestrictedApi")
 
     private var mPlayer: Player? = null

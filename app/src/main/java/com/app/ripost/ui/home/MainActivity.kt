@@ -1,5 +1,6 @@
 package com.app.ripost.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -8,8 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.app.ripost.R
+import com.app.ripost.ui.welcome.WelcomeActivity
 import com.app.ripost.utils.adapters.MainViewPagerAdapter
 import com.app.ripost.utils.BottomNavigationHelper
+import com.google.firebase.auth.FirebaseAuth
 import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_bottom_navigation.*
@@ -18,9 +21,13 @@ import kotlinx.android.synthetic.main.snippet_home_toolbar.*
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var auth: FirebaseAuth
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        auth = FirebaseAuth.getInstance()
         setupBottomNavigation()
         setupViewPager()
     }
@@ -44,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         pager.offscreenPageLimit = 3
         toolbarState()
         toolbarNavigation()
+        updateUIToolbar(2)
     }
 
     private fun toolbarState(){
@@ -66,7 +74,7 @@ class MainActivity : AppCompatActivity() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 if(position ==0) {
-                    pager.setCurrentItem(1, false);
+                    pager.setCurrentItem(1, false)
                 }
                 updateUIToolbar(position)
             }
@@ -101,15 +109,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun toolbarNavigation(){
         PushDownAnim.setPushDownAnimTo(tvVirals).setOnClickListener {
-            pager.currentItem = 2
+            pager.currentItem = 3
         }
 
         PushDownAnim.setPushDownAnimTo(tvYours).setOnClickListener {
-            pager.currentItem = 1
+            pager.currentItem = 2
         }
 
         PushDownAnim.setPushDownAnimTo(chat).setOnClickListener {
-            pager.currentItem = 0
+            pager.currentItem = 1
         }
     }
 
@@ -124,6 +132,13 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         overridePendingTransition(0, 0)
         super.onStart()
+        val currentUser = auth.currentUser
+        if(currentUser == null){
+            Log.d(TAG, "onStart: user is logged out")
+            val intent = Intent(this, WelcomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     companion object{

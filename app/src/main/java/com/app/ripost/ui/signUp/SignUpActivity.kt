@@ -49,6 +49,7 @@ class SignUpActivity : AppCompatActivity() {
         progress_bar.visibility = View.VISIBLE
         Firebase.auth.createUserWithEmailAndPassword(email.text.toString(), password.text.toString()).addOnCompleteListener {
             if(it.isSuccessful){
+                Firebase.auth.currentUser?.sendEmailVerification()
                 createUser()
             }
         }
@@ -61,7 +62,7 @@ class SignUpActivity : AppCompatActivity() {
             "",
             email.text.toString(),
             "",
-            "https://www.unmc.edu/cihc/_images/faculty/default.jpg",
+            "",
             "",
             DateUtils().getTimestamp(),
             0,

@@ -15,10 +15,16 @@
     <string name="emoji_hello">👋</string>
     <string name="emoji_inspector">🕵</string>
     <string name="emoji_party">🥳️</string>
+    <string name="emoji_self_photo">🤳</string>
+    <string name="emoji_art">🖌️</string>
     <string name="input_display_name">Display name</string>
     <string name="skip">skip</string>
     <string name="button_next">Next</string>
     <string name="text_birthday">Birthday</string>
+    <string name="text_profile_photo">Profile Photo</string>
+    <string name="text_biography">Biography</string>
+
+    <string name="hint_biography">Describe the video creator in your head... (150 words)</string>
 
 
     <string name="img_description">img description</string>

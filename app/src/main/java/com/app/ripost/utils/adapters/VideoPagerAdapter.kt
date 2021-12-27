@@ -15,7 +15,7 @@ class VideoPagerAdapter(private var videos: MutableList<String>, fm: FragmentMan
 
 
     override fun createFragment(position: Int): Fragment {
-        return VideoFragment(videos[position])
+        return VideoFragment()
     }
 
 

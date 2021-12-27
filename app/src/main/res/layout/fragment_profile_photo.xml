@@ -38,8 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="🤳️‍"
-            android:textSize="35dp"/>
+            android:text="@string/emoji_self_photo"
+            android:textSize="35sp"/>
 
 
     </RelativeLayout>
@@ -48,9 +48,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Profile photo"
+        android:text="@string/text_profile_photo"
         android:layout_marginTop="10dp"
-
         android:id="@+id/tvProfilePhoto"
         android:fontFamily="@font/work_sans_semi_bold"
         android:textColor="@color/white"
@@ -61,6 +60,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_box_import_photo"
         android:layout_marginTop="50dp"
+        android:contentDescription="@string/img_description"
         android:id="@+id/importBox"/>
 
     <ImageView
@@ -68,6 +68,7 @@
         android:layout_height="300dp"
         android:layout_gravity="center_horizontal"
         android:id="@+id/imageView"
+        android:contentDescription="@string/img_description"
         android:visibility="gone"/>
 
 
@@ -79,7 +80,7 @@
         android:layout_marginTop="50dp"
         android:background="@drawable/bg_btn_primary"
         android:layout_gravity="center"
-        android:text="Next"
+        android:text="@string/button_next"
         android:textAllCaps="false"
         android:fontFamily="@font/work_sans_regular"
         android:textSize="18sp"
@@ -89,7 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Skip"
+        android:text="@string/skip"
         android:textColor="@color/placeholder"
         android:fontFamily="@font/work_sans_medium"
         android:textSize="15sp"
@@ -102,7 +103,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         app:indicatorColor="@color/white"
-        android:indeterminateOnly="true"
         android:id="@+id/progress_bar"
         app:trackThickness="1dp"
         android:visibility="gone"/>

@@ -38,8 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="🖌️️‍"
-            android:textSize="35dp"/>
+            android:text="@string/emoji_art"
+            android:textSize="35sp"/>
 
 
     </RelativeLayout>
@@ -58,8 +58,9 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Describe the videaste in your head... (150 words)"
+        android:hint="@string/hint_biography"
         android:textColor="@color/white"
+        android:maxLength="150"
         android:fontFamily="@font/work_sans_regular"
         android:layout_margin="20dp"
         android:textSize="15sp"
