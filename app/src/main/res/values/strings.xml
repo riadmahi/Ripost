@@ -53,6 +53,9 @@
     <string name="dbname_following">Following</string>
     <string name="dbname_notifications">Notifications</string>
     <string name="dbname_wait_list">WaitList</string>
+    <string name="dbname_friends">Friends</string>
+    <string name="dbname_groups">Groups</string>
+    <string name="dbname_messages">Messages</string>
     <string name="field_username">username</string>
     <string name="field_display_name">displayName</string>
     <string name="field_email">email</string>

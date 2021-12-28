@@ -121,6 +121,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun openNewChatFragment(){
+        Log.d(TAG, "openNewChatFragment: started")
+        supportFragmentManager.beginTransaction()
+                .add(R.id.container, NewChatFragment(), "FROM_MAIN")
+                .commit()
+    }
+
     private fun setupBottomNavigation(){
         Log.d(TAG, "setupBottomNavigation: started.")
         BottomNavigationHelper().navigate(this, bottom_navigation)
@@ -138,6 +145,20 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, WelcomeActivity::class.java)
             startActivity(intent)
             finish()
+        }
+    }
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentByTag("FROM_MAIN")
+        Log.d(TAG, "onBackPressed: fragment find $fragment")
+        if (fragment != null) {
+            Log.d(TAG, "onBackPressed: pressed")
+            supportFragmentManager.beginTransaction().remove(fragment).commit()
+        }else{
+            //No fragment, close the activity
+            if(pager.currentItem != 2)
+                pager.currentItem = 2
+            else
+                super.onBackPressed()
         }
     }
 

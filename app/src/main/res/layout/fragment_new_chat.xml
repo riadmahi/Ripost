@@ -2,39 +2,47 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background">
 
-
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/chatRecycler"
-        android:paddingTop="50dp"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/snippet_toolbar"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/newChatRecycler"/>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:id="@+id/newChat"
+        android:id="@+id/startChatting"
         android:layout_margin="25dp">
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:backgroundTint="@color/primary"
             android:clickable="false"
             android:focusable="false"
-            app:backgroundTint="@color/primary"
             android:contentDescription="@string/img_description" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_new_chat"
+            android:src="@drawable/ic_check"
+            android:tint="@color/white"
             android:elevation="12dp"
             android:contentDescription="@string/img_description"
             android:layout_centerInParent="true"/>
 
     </RelativeLayout>
+
+
+
 </RelativeLayout>

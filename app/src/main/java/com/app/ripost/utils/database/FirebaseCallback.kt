@@ -6,3 +6,7 @@ interface FirebaseCallback {
     fun onFailure()
 
 }
+
+interface FirebaseCallbackSuccess{
+    fun onSuccess()
+}

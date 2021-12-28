@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import com.app.ripost.R
 import com.app.ripost.utils.DateUtils
+import com.app.ripost.utils.models.Group
 import com.app.ripost.utils.models.User
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.ktx.auth
@@ -147,8 +148,8 @@ class FirebaseMethods(private val context: Context) {
 
     }
 
-    fun checkIfIsFollower(userID: String): Boolean{
-        var alreadyFollow = false
+    fun checkIfIsFollower(userID: String, callback: FirebaseCallbackSuccess){
+
         db.collection(context.getString(R.string.dbname_followers))
                 .document(userID)
                 .get()
@@ -156,12 +157,12 @@ class FirebaseMethods(private val context: Context) {
                     if (it.isSuccessful){
                        val document = it.result
                         if(document.exists())
-                            if (document.get(uid) != null)
-                                alreadyFollow = true
+                            if (document.get(uid) != null){
+                                Log.d(TAG, "checkIfIsFollower: SUCESS")
+                                callback.onSuccess()
+                            }
                     }
                 }
-
-        return alreadyFollow
     }
 
     fun addFollower(userID: String){
@@ -180,7 +181,7 @@ class FirebaseMethods(private val context: Context) {
         )
         db.collection(context.getString(R.string.dbname_following)).document(uid).set(followData)
         db.collection(context.getString(R.string.dbname_users)).document(uid).update(
-                context.getString(R.string.field_followers), FieldValue.increment(1)
+                context.getString(R.string.field_following), FieldValue.increment(1)
         )
     }
 
@@ -194,7 +195,7 @@ class FirebaseMethods(private val context: Context) {
     fun removeFollowing(userID: String){
         db.collection(context.getString(R.string.dbname_following)).document(uid).update(userID, FieldValue.delete())
         db.collection(context.getString(R.string.dbname_users)).document(uid).update(
-                context.getString(R.string.field_followers), FieldValue.increment(-1)
+                context.getString(R.string.field_following), FieldValue.increment(-1)
         )
     }
 
@@ -214,23 +215,60 @@ class FirebaseMethods(private val context: Context) {
     }
 
 
-    fun waitTheFollowPermission(userID: String): Boolean{
-        var inWaitList = false
+    fun waitTheFollowPermission(userID: String, callback: FirebaseCallbackSuccess){
         db.collection(context.getString(R.string.dbname_wait_list)).document(userID).get()
                 .addOnCompleteListener {
                     if (it.isSuccessful){
                         val document = it.result
                         if(document.exists())
-                            if (document.get(uid) != null)
-                                inWaitList = true
+                            if (document.get(uid) != null){
+                                callback.onSuccess()
+                            }
                     }
                 }
-        return inWaitList
     }
 
     fun removeUserInWaitList(userID: String){
         db.collection(context.getString(R.string.dbname_wait_list)).document(userID).update(uid, FieldValue.delete())
     }
+
+    fun addFriend(userID: String){
+        val data =  hashMapOf(
+                userID to DateUtils().getTimestamp()
+        )
+        val myData =  hashMapOf(
+                uid to DateUtils().getTimestamp()
+        )
+        db.collection(context.getString(R.string.dbname_friends)).document(uid).set(data)
+        db.collection(context.getString(R.string.dbname_friends)).document(userID).set(myData)
+        //Start a new conversation
+        val id = db.collection("Groups").document().id
+        val members : ArrayList<String> = ArrayList()
+        members.add(uid)
+        members.add(userID)
+        val seen : ArrayList<String> = ArrayList()
+        val group = Group(id, uid, DateUtils().getTimestamp(), members, "New conversation", seen)
+        db.collection(context.getString(R.string.dbname_groups)).document(id).set(group)
+
+    }
+    fun removeFriend(userID: String){
+        db.collection(context.getString(R.string.dbname_friends)).document(userID).update(uid, FieldValue.delete())
+        db.collection(context.getString(R.string.dbname_friends)).document(uid).update(userID, FieldValue.delete())
+    }
+
+    fun isFollowingMe(userID: String, callback: FirebaseCallbackSuccess){
+        db.collection(context.getString(R.string.dbname_following)).document(userID).get()
+                .addOnCompleteListener {
+                    if (it.isSuccessful){
+                        val document = it.result
+                        if(document.exists())
+                            if (document.get(uid) != null)
+                                callback.onSuccess()
+                    }
+                }
+    }
+
+
 
     companion object{
         private const val TAG = "FirebaseMethods"

@@ -2,9 +2,11 @@ package com.app.ripost.ui.profile
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ripost.R
+import com.app.ripost.utils.database.FirebaseCallbackSuccess
 import com.app.ripost.utils.database.FirebaseMethods
 import com.app.ripost.utils.models.User
 import com.bumptech.glide.Glide
@@ -20,10 +22,12 @@ import kotlinx.android.synthetic.main.snippet_view_profile_follow.*
 class ViewProfileActivity : AppCompatActivity() {
 
     private var mUser: User? =null
+    private var isFriend = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_profile)
-        editProfile.setImageResource(R.drawable.ic_flag)
+        editProfile.visibility = View.GONE
+        report.visibility = View.VISIBLE
         mUser = intent.getParcelableExtra("EXTRA_USER")
         setupUserInformation()
         back.setOnClickListener {
@@ -38,9 +42,7 @@ class ViewProfileActivity : AppCompatActivity() {
                 //Load the gridView
             }
         }
-
         setupWidgets()
-
     }
 
 
@@ -76,7 +78,16 @@ class ViewProfileActivity : AppCompatActivity() {
                 unFollow.visibility = View.VISIBLE
                 FirebaseMethods(this).addFollower(mUser?.uid.toString())
                 FirebaseMethods(this).addFollowing(mUser?.uid.toString())
-                numFollowers.text = mUser?.followers?.plus(1).toString()
+                numFollowers.text = mUser?.followers.toString()
+
+                FirebaseMethods(this).isFollowingMe(mUser?.uid.toString(), object: FirebaseCallbackSuccess{
+                    override fun onSuccess() {
+                        FirebaseMethods(this@ViewProfileActivity).addFriend(mUser?.uid.toString())
+                        isFriend = true
+                    }
+                })
+
+
             }else{
                 FirebaseMethods(this).askPermissionToFollow(mUser?.uid.toString())
                 follow.visibility = View.GONE
@@ -90,7 +101,9 @@ class ViewProfileActivity : AppCompatActivity() {
             follow.visibility = View.VISIBLE
             FirebaseMethods(this).removeFollower(mUser?.uid.toString())
             FirebaseMethods(this).removeFollowing(mUser?.uid.toString())
-            numFollowing.text = mUser?.followers?.minus(1).toString()
+            numFollowers.text = mUser?.followers?.minus(1).toString()
+            if (isFriend)
+                FirebaseMethods(this).removeFriend(mUser?.uid.toString())
         }
 
         PushDownAnim.setPushDownAnimTo(waitResponse).setOnClickListener {
@@ -106,20 +119,25 @@ class ViewProfileActivity : AppCompatActivity() {
 
 
     private fun updateFollowButtonUI(){
-        val isFollower = FirebaseMethods(this).checkIfIsFollower(mUser?.uid.toString())
-        if(isFollower) {
-            follow.visibility = View.GONE
-            unFollow.visibility = View.VISIBLE
-        }else{
-            if(FirebaseMethods(this).waitTheFollowPermission(mUser?.uid.toString())){
+        FirebaseMethods(this).checkIfIsFollower(mUser?.uid.toString(), object : FirebaseCallbackSuccess {
+            override fun onSuccess() {
+                follow.visibility = View.GONE
+                unFollow.visibility = View.VISIBLE
+            }
+        })
+        FirebaseMethods(this).waitTheFollowPermission(mUser?.uid.toString(), object : FirebaseCallbackSuccess{
+            override fun onSuccess() {
                 follow.visibility = View.GONE
                 unFollow.visibility = View.GONE
                 waitResponse.visibility = View.VISIBLE
-            }else {
-                unFollow.visibility = View.GONE
-                follow.visibility = View.VISIBLE
             }
-        }
+        })
+
+
+    }
+
+    companion object{
+        private const val TAG = "ViewProfileActivity"
     }
 
 

@@ -18,4 +18,9 @@
         android:layout_alignParentBottom="true">
         <include layout="@layout/layout_bottom_navigation"/>
     </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/container"/>
 </RelativeLayout>
