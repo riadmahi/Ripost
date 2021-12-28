@@ -5,15 +5,19 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import com.app.ripost.R
+import com.app.ripost.utils.DateUtils
 import com.app.ripost.utils.models.User
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
+import java.lang.reflect.Field
+
 
 class FirebaseMethods(private val context: Context) {
 
@@ -30,8 +34,8 @@ class FirebaseMethods(private val context: Context) {
         var usernameExist = false
         val userRef = db.collection(context.getString(R.string.dbname_users))
         val query: Query = userRef.whereEqualTo(
-            context.getString(R.string.field_username),
-            username
+                context.getString(R.string.field_username),
+                username
         )
         query.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -53,33 +57,33 @@ class FirebaseMethods(private val context: Context) {
 
     fun updateDisplayName(displayName: String){
         db.collection(context.getString(R.string.dbname_users)).document(uid).update(
-            context.getString(
-                R.string.field_display_name
-            ), displayName
+                context.getString(
+                        R.string.field_display_name
+                ), displayName
         )
     }
 
     fun updateBirthday(birthday: String){
         db.collection(context.getString(R.string.dbname_users)).document(uid).update(
-            context.getString(
-                R.string.field_birthday
-            ), birthday
+                context.getString(
+                        R.string.field_birthday
+                ), birthday
         )
     }
 
     fun updateBiography(biography: String){
         db.collection(context.getString(R.string.dbname_users)).document(uid).update(
-            context.getString(
-                R.string.field_biography
-            ), biography
+                context.getString(
+                        R.string.field_biography
+                ), biography
         )
     }
 
     fun updatePrivate(private: Boolean){
         db.collection(context.getString(R.string.dbname_users)).document(uid).update(
-            context.getString(
-                R.string.field_private
-            ), private
+                context.getString(
+                        R.string.field_private
+                ), private
         )
     }
 
@@ -91,15 +95,15 @@ class FirebaseMethods(private val context: Context) {
         uploadTask = storageReference.putFile(imgUri)//Uri.fromFile(File(imgUri))
         uploadTask.addOnSuccessListener(OnSuccessListener {
             storageReference.downloadUrl
-                .addOnSuccessListener { url ->
-                    Log.d(TAG, "uploadProfilePhoto: profile photo upload successful")
-                    db.collection(context.getString(R.string.dbname_users))
-                        .document(uid).update(
-                            context.getString(R.string.field_photo_url),
-                            url.toString()
-                        )
-                    callback.onFinish()
-                }
+                    .addOnSuccessListener { url ->
+                        Log.d(TAG, "uploadProfilePhoto: profile photo upload successful")
+                        db.collection(context.getString(R.string.dbname_users))
+                                .document(uid).update(
+                                        context.getString(R.string.field_photo_url),
+                                        url.toString()
+                                )
+                        callback.onFinish()
+                    }
         }).addOnFailureListener {
             Log.w(TAG, "uploadProfilePhoto: profile photo upload failed.")
             Toast.makeText(context, "Upload photo failed, please reattempt.", Toast.LENGTH_SHORT).show()
@@ -141,6 +145,91 @@ class FirebaseMethods(private val context: Context) {
                 Log.w(TAG, "Error getting documents: ", exception)
             }
 
+    }
+
+    fun checkIfIsFollower(userID: String): Boolean{
+        var alreadyFollow = false
+        db.collection(context.getString(R.string.dbname_followers))
+                .document(userID)
+                .get()
+                .addOnCompleteListener {
+                    if (it.isSuccessful){
+                       val document = it.result
+                        if(document.exists())
+                            if (document.get(uid) != null)
+                                alreadyFollow = true
+                    }
+                }
+
+        return alreadyFollow
+    }
+
+    fun addFollower(userID: String){
+        val followData = hashMapOf(
+                uid to DateUtils().getTimestamp()
+        )
+        db.collection(context.getString(R.string.dbname_followers)).document(userID).set(followData)
+        db.collection(context.getString(R.string.dbname_users)).document(userID).update(
+                context.getString(R.string.field_followers), FieldValue.increment(1)
+        )
+    }
+
+    fun addFollowing(userID: String){
+        val followData = hashMapOf(
+                userID to DateUtils().getTimestamp()
+        )
+        db.collection(context.getString(R.string.dbname_following)).document(uid).set(followData)
+        db.collection(context.getString(R.string.dbname_users)).document(uid).update(
+                context.getString(R.string.field_followers), FieldValue.increment(1)
+        )
+    }
+
+    fun removeFollower(userID: String){
+        db.collection(context.getString(R.string.dbname_followers)).document(userID).update(uid, FieldValue.delete())
+        db.collection(context.getString(R.string.dbname_users)).document(userID).update(
+                context.getString(R.string.field_followers), FieldValue.increment(-1)
+        )
+    }
+
+    fun removeFollowing(userID: String){
+        db.collection(context.getString(R.string.dbname_following)).document(uid).update(userID, FieldValue.delete())
+        db.collection(context.getString(R.string.dbname_users)).document(uid).update(
+                context.getString(R.string.field_followers), FieldValue.increment(-1)
+        )
+    }
+
+    fun askPermissionToFollow(userID: String){
+        val id = db.collection("Notifications").document().id
+        //uid|dateCreated|request(askpermission, like...)
+        val permission = uid +"|"+DateUtils().getTimestamp()+"|ASK_FOLLOW"
+        val data = hashMapOf(
+                id to permission
+        )
+        db.collection(context.getString(R.string.dbname_notifications)).document(userID).set(data)
+
+        val dataWaitList =  hashMapOf(
+                userID to DateUtils().getTimestamp()
+        )
+        db.collection(context.getString(R.string.dbname_wait_list)).document(uid).set(dataWaitList)
+    }
+
+
+    fun waitTheFollowPermission(userID: String): Boolean{
+        var inWaitList = false
+        db.collection(context.getString(R.string.dbname_wait_list)).document(userID).get()
+                .addOnCompleteListener {
+                    if (it.isSuccessful){
+                        val document = it.result
+                        if(document.exists())
+                            if (document.get(uid) != null)
+                                inWaitList = true
+                    }
+                }
+        return inWaitList
+    }
+
+    fun removeUserInWaitList(userID: String){
+        db.collection(context.getString(R.string.dbname_wait_list)).document(userID).update(uid, FieldValue.delete())
     }
 
     companion object{
