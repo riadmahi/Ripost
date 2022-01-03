@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#1D1D1D">
+    android:color="#101010">
     <!-- ripple color -->
 
     <!-- for Button -->
@@ -12,7 +12,7 @@
 
             <corners android:radius="25dp" />
 
-            <solid android:color="#1D1D1D"/>
+            <solid android:color="#101010"/>
 
         </shape>
 

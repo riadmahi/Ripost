@@ -11,7 +11,13 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="50dp"/>
 
-    <include layout="@layout/snippet_home_toolbar"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rel">
+
+        <include layout="@layout/snippet_home_toolbar"/>
+    </RelativeLayout>
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

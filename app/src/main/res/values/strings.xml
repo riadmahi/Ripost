@@ -70,4 +70,5 @@
     <string name="field_token">token</string>
     <string name="field_biography">biography</string>
     <string name="field_photo_url">photoUrl</string>
+    <string name="field_members">members</string>
 </resources>

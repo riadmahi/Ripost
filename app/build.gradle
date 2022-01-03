@@ -73,6 +73,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage-ktx'
 
 
+    implementation 'com.r0adkll:slidableactivity:2.1.0'
+
+
+
 
 
 

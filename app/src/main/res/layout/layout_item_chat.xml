@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="8dp"
+        android:id="@+id/chatCard"
         android:orientation="horizontal">
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -34,16 +35,19 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Riad Mahi"
+                    android:maxWidth="220dp"
+                    android:ellipsize="end"
+                    android:text=""
                     android:layout_marginStart="15dp"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
+                    android:id="@+id/displayName"
                     android:fontFamily="@font/work_sans_medium"
                     android:textColor="@color/white"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="1h ago"
+                    android:text="1h"
                     android:gravity="end"
                     android:layout_marginEnd="25dp"
                     android:textColor="@color/white"

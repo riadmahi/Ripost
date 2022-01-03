@@ -117,8 +117,19 @@ class FirebaseMethods(private val context: Context) {
     }
 
     fun getUserInformation(callback: FirebaseRetrieveUserCallback) {
+        val docRef = db.collection(context.getString(R.string.dbname_users)).document(uid)
+        docRef.get().addOnSuccessListener { documentSnapshot ->
+            if(documentSnapshot.exists()) {
+                val user = documentSnapshot.toObject(User::class.java)!!
+                Log.d(TAG, "getUserInformation: user $user")
+                callback.onFinish(user)
+            }
+        }
+    }
 
-        val docRef = db.collection(context.getString(R.string.dbname_users)).document(auth.uid.toString())
+
+    fun retrieveUserInformationFromUID(userID: String, callback: FirebaseRetrieveUserCallback) {
+        val docRef = db.collection(context.getString(R.string.dbname_users)).document(userID)
         docRef.get().addOnSuccessListener { documentSnapshot ->
             if(documentSnapshot.exists()) {
                 val user = documentSnapshot.toObject(User::class.java)!!
@@ -247,9 +258,11 @@ class FirebaseMethods(private val context: Context) {
         members.add(uid)
         members.add(userID)
         val seen : ArrayList<String> = ArrayList()
-        val group = Group(id, uid, DateUtils().getTimestamp(), members, "New conversation", seen)
+        val colors : ArrayList<String> = ArrayList()
+        colors.add("$uid|#19D099")
+        colors.add("$userID|#C7B4FF")
+        val group = Group(id, uid, DateUtils().getTimestamp(), members, "New conversation", seen, colors, "", "null")
         db.collection(context.getString(R.string.dbname_groups)).document(id).set(group)
-
     }
     fun removeFriend(userID: String){
         db.collection(context.getString(R.string.dbname_friends)).document(userID).update(uid, FieldValue.delete())
@@ -266,6 +279,23 @@ class FirebaseMethods(private val context: Context) {
                                 callback.onSuccess()
                     }
                 }
+    }
+
+    fun getAllUserGroups(callback: FirebaseCallbackGroups){
+        db.collection(context.getString(R.string.dbname_groups)).whereArrayContains(context.getString(R.string.field_members), uid).get().addOnSuccessListener{groups->
+            Log.d(TAG, "getAllUserGroups: success")
+            Log.d(TAG, "getAllUserGroups: ${groups.metadata}, ${groups.size()}")
+            val mGroups: MutableList<Group> = mutableListOf()
+            for(group in groups){
+                val groupFind = group.toObject(Group::class.java)
+                Log.d(TAG, "getAllUserGroups: group find : $groupFind")
+                mGroups.add(groupFind)
+                Log.d(TAG, "getAllUserGroups: $mGroups")
+            }
+
+            callback.onSuccess(mGroups)
+
+        }
     }
 
 

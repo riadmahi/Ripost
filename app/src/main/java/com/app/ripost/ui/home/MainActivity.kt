@@ -2,9 +2,11 @@ package com.app.ripost.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Message
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
@@ -12,6 +14,7 @@ import com.app.ripost.R
 import com.app.ripost.ui.welcome.WelcomeActivity
 import com.app.ripost.utils.adapters.MainViewPagerAdapter
 import com.app.ripost.utils.BottomNavigationHelper
+import com.app.ripost.utils.models.Group
 import com.google.firebase.auth.FirebaseAuth
 import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,7 +25,8 @@ import kotlinx.android.synthetic.main.snippet_home_toolbar.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-
+    private var mGroup: Group = Group()
+    private var mAdapter : MainViewPagerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,24 +38,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupViewPager(){
         val fragmentList = arrayListOf(
-                MessageFragment(),
                 ChatFragment(),
                 HomeFragment(),
                 ViralsFragment()
         )
 
-        val adapter = MainViewPagerAdapter(
+        mAdapter = MainViewPagerAdapter(
                 fragmentList,
                 this.supportFragmentManager,
                 lifecycle
         )
 
-        pager.adapter = adapter
-        pager.setCurrentItem(2, false)
-        pager.offscreenPageLimit = 3
+        pager.adapter = mAdapter
+        pager.setCurrentItem(1, false)
+        pager.offscreenPageLimit = 2
         toolbarState()
         toolbarNavigation()
-        updateUIToolbar(2)
+        updateUIToolbar(1)
     }
 
     private fun toolbarState(){
@@ -59,6 +62,7 @@ class MainActivity : AppCompatActivity() {
             override fun onPageScrollStateChanged(state: Int) {
 
                 println("state: $state")
+
             }
 
             override fun onPageScrolled(
@@ -73,9 +77,6 @@ class MainActivity : AppCompatActivity() {
 
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                if(position ==0) {
-                    pager.setCurrentItem(1, false)
-                }
                 updateUIToolbar(position)
             }
         })
@@ -87,17 +88,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateUIToolbar(position: Int){
         when (position) {
-            1 -> {
+            0 -> {
                 chat.setColorFilter(ContextCompat.getColor(this, R.color.white))
                 tvVirals.setTextColor(this.resources.getColor(R.color.placeholder, null))
                 tvYours.setTextColor(this.resources.getColor(R.color.placeholder, null))
             }
-            2 -> {
+            1 -> {
                 chat.setColorFilter(ContextCompat.getColor(this, R.color.placeholder))
                 tvVirals.setTextColor(this.resources.getColor(R.color.placeholder, null))
                 tvYours.setTextColor(this.resources.getColor(R.color.white, null))
             }
-            3 -> {
+            2 -> {
                 chat.setColorFilter(ContextCompat.getColor(this, R.color.placeholder))
                 tvVirals.setTextColor(this.resources.getColor(R.color.white, null))
                 tvYours.setTextColor(this.resources.getColor(R.color.placeholder, null))
@@ -109,15 +110,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun toolbarNavigation(){
         PushDownAnim.setPushDownAnimTo(tvVirals).setOnClickListener {
-            pager.currentItem = 3
-        }
-
-        PushDownAnim.setPushDownAnimTo(tvYours).setOnClickListener {
             pager.currentItem = 2
         }
 
-        PushDownAnim.setPushDownAnimTo(chat).setOnClickListener {
+        PushDownAnim.setPushDownAnimTo(tvYours).setOnClickListener {
             pager.currentItem = 1
+        }
+
+        PushDownAnim.setPushDownAnimTo(chat).setOnClickListener {
+            pager.currentItem = 0
         }
     }
 
@@ -160,6 +161,11 @@ class MainActivity : AppCompatActivity() {
             else
                 super.onBackPressed()
         }
+    }
+
+    fun openMessageFragment(group: Group){
+        val intent = Intent(this, MessageActivity::class.java).putExtra("EXTRA_GROUP", group)
+        startActivity(intent)
     }
 
     companion object{

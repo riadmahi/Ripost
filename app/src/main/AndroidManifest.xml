@@ -37,6 +37,8 @@
         <activity android:name=".ui.camera.UploadActivity"/>
         <activity android:name=".ui.camera.PreviewActivity"/>
         <activity android:name=".ui.profile.ViewProfileActivity"/>
+        <activity android:name=".ui.home.MessageActivity"
+            android:theme="@style/Theme.Swipe.Back.NoActionBar"/>
 
     </application>
 
