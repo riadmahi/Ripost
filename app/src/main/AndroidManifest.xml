@@ -18,26 +18,40 @@
         android:roundIcon="@drawable/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ripost">
-        <activity android:name=".ui.splashScreen.SplashScreenActivity">
+        <activity android:name=".ui.splashScreen.SplashScreenActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.home.MainActivity"/>
-        <activity android:name=".ui.notification.NotificationActivity"/>
-        <activity android:name=".ui.search.SearchActivity"/>
-        <activity android:name=".ui.camera.CameraActivity"/>
-        <activity android:name=".ui.profile.ProfileActivity"/>
-        <activity android:name=".ui.welcome.WelcomeActivity"/>
-        <activity android:name=".ui.signIn.SignInActivity"/>
-        <activity android:name=".ui.signUp.SignUpActivity"/>
-        <activity android:name=".ui.settings.SettingsActivity"/>
-        <activity android:name=".ui.camera.UploadActivity"/>
-        <activity android:name=".ui.camera.PreviewActivity"/>
-        <activity android:name=".ui.profile.ViewProfileActivity"/>
+        <activity android:name=".ui.home.MainActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.notification.NotificationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.search.SearchActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.camera.CameraActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.profile.ProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.welcome.WelcomeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.signIn.SignInActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.signUp.SignUpActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.settings.SettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.camera.UploadActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.camera.PreviewActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.profile.ViewProfileActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.home.MessageActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Swipe.Back.NoActionBar"/>
 
     </application>

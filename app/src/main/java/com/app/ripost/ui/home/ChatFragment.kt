@@ -34,6 +34,7 @@ class ChatFragment : Fragment() {
             override fun onSuccess(groups: MutableList<Group>) {
                 mChat = groups
 
+
                 Log.d(TAG, "onSuccess: groupfind $mChat")
                 setAdapter()
             }

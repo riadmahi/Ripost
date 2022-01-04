@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/bg_chat_item"
-    android:layout_margin="5dp">
+    android:background="@drawable/bg_bottom_line"
+    android:padding="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,8 +14,8 @@
         android:orientation="horizontal">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:id="@+id/profile_photo"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/default_photo"
@@ -47,9 +47,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="1h"
+                    android:text=""
                     android:gravity="end"
-                    android:layout_marginEnd="25dp"
+                    android:id="@+id/timestamp"
+                    android:layout_marginEnd="10dp"
                     android:textColor="@color/white"
                     android:fontFamily="@font/work_sans_regular"/>
             </LinearLayout>
@@ -64,13 +65,15 @@
                     android:layout_height="15dp"
                     android:layout_marginStart="15dp"
                     app:cardCornerRadius="30dp"
-                    app:cardBackgroundColor="@color/primary"
+                    android:id="@+id/seenIndicator"
+                    app:cardBackgroundColor="@color/dark"
                     android:layout_gravity="center_vertical"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sends you a chat"
                     android:layout_marginStart="5dp"
+                    android:id="@+id/textChatIndicator"
                     android:textSize="15sp"
                     android:fontFamily="@font/work_sans_regular"
                     android:textColor="@color/white"/>

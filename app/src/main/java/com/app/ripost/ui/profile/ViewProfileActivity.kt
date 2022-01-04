@@ -80,7 +80,7 @@ class ViewProfileActivity : AppCompatActivity() {
                 FirebaseMethods(this).addFollowing(mUser?.uid.toString())
                 numFollowers.text = mUser?.followers.toString()
 
-                FirebaseMethods(this).isFollowingMe(mUser?.uid.toString(), object: FirebaseCallbackSuccess{
+                FirebaseMethods(this).isFollowingMe(mUser?.uid.toString(), object : FirebaseCallbackSuccess {
                     override fun onSuccess() {
                         FirebaseMethods(this@ViewProfileActivity).addFriend(mUser?.uid.toString())
                         isFriend = true
@@ -119,10 +119,12 @@ class ViewProfileActivity : AppCompatActivity() {
 
 
     private fun updateFollowButtonUI(){
+        var isFollow = false
         FirebaseMethods(this).checkIfIsFollower(mUser?.uid.toString(), object : FirebaseCallbackSuccess {
             override fun onSuccess() {
                 follow.visibility = View.GONE
                 unFollow.visibility = View.VISIBLE
+                isFollow = true
             }
         })
         FirebaseMethods(this).waitTheFollowPermission(mUser?.uid.toString(), object : FirebaseCallbackSuccess{
@@ -130,8 +132,13 @@ class ViewProfileActivity : AppCompatActivity() {
                 follow.visibility = View.GONE
                 unFollow.visibility = View.GONE
                 waitResponse.visibility = View.VISIBLE
+                isFollow = true
             }
         })
+
+        if(!isFollow){
+            follow.visibility = View.VISIBLE
+        }
 
 
     }

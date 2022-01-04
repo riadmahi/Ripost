@@ -12,6 +12,7 @@ data class Group(val groupID: String,
                  val seenBy: ArrayList<String>,
                  val color: ArrayList<String>,
                  val photoUrl: String,
-                 val name: String): Parcelable{
-    constructor() : this("", "", "", arrayListOf<String>(), "", arrayListOf<String>(), arrayListOf<String>(), "", "")
+                 val name: String,
+                 val lastMessageSendAt: String): Parcelable{
+    constructor() : this("", "", "", arrayListOf<String>(), "", arrayListOf<String>(), arrayListOf<String>(), "", "", "")
 }

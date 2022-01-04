@@ -13,4 +13,5 @@
     <color name="input">#282729</color>
     <color name="spanish_gray">#8F8F8F</color>
     <color name="error">#FF5353</color>
+    <color name="dark">#FF424242</color>
 </resources>

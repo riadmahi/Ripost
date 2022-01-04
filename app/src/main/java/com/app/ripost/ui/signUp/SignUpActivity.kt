@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.app.ripost.R
 import com.app.ripost.ui.settings.*
 import com.app.ripost.utils.DateUtils
+import com.app.ripost.utils.database.FirebaseCallbackBool
 import com.app.ripost.utils.database.FirebaseMethods
 import com.app.ripost.utils.models.User
 import com.google.firebase.auth.ktx.auth
@@ -116,15 +117,26 @@ class SignUpActivity : AppCompatActivity() {
                 if (s!!.contains(Regex("^[a-zA-Z0-9_]{4,}$"))) {
                     Log.d(TAG, "onTextChanged: all is good that username match with the regex.")
                     usernameError.visibility = View.GONE
-                    if(!FirebaseMethods(this@SignUpActivity).checkIfUsernameExist(s.toString())){
-                        //Username not exist
-                        usernameVerified = true
-                        usernameError.visibility = View.GONE
-                    }else{
-                        usernameError.text = "This username already exist."
-                        usernameError.visibility = View.VISIBLE
-                        usernameVerified = false
-                    }
+                    FirebaseMethods(this@SignUpActivity).checkIfUsernameExist(s.toString(), object : FirebaseCallbackBool{
+                        override fun onSuccess(bool: Boolean) {
+                            if(!bool){
+                                //Username not exist
+                                Log.d(TAG, "onTextChanged: username verfied !")
+                                usernameVerified = true
+                                usernameError.visibility = View.GONE
+                            }else{
+                                Log.d(TAG, "onTextChanged: username is not verified")
+                                usernameError.text = "This username already exist."
+                                usernameError.visibility = View.VISIBLE
+                                usernameVerified = false
+                            }
+                        }
+                    })
+
+
+
+
+
 
                 } else {
                     Log.e(TAG, "onTextChanged: doesn't match with the regex.")
