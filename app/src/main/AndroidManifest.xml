@@ -18,6 +18,25 @@
         android:roundIcon="@drawable/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Ripost">
+
+        <service
+            android:name=".utils.notifications.MyFireBaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".utils.notifications.MyFirebaseIdService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity android:name=".ui.splashScreen.SplashScreenActivity"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -55,6 +74,7 @@
             android:theme="@style/Theme.Swipe.Back.NoActionBar"/>
 
     </application>
+
 
 
 </manifest>
