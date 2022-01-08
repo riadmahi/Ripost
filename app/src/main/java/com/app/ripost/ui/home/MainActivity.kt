@@ -2,15 +2,14 @@ package com.app.ripost.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Message
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.app.ripost.R
+import com.app.ripost.ui.message.MessageActivity
 import com.app.ripost.ui.welcome.WelcomeActivity
 import com.app.ripost.utils.adapters.MainViewPagerAdapter
 import com.app.ripost.utils.BottomNavigationHelper

@@ -69,7 +69,7 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.profile.ViewProfileActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ui.home.MessageActivity"
+        <activity android:name=".ui.message.MessageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Swipe.Back.NoActionBar"/>
         <activity android:name=".ui.camera.MyMomentsActivity"

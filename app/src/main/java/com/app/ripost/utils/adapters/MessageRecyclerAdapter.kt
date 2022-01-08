@@ -6,9 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ripost.R
+import com.app.ripost.ui.message.MessageActivity
 import com.app.ripost.utils.DateUtils
 import com.app.ripost.utils.models.Group
 import com.app.ripost.utils.models.Message
@@ -47,6 +49,8 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
 
         val msg = mMessages[position]
         val currentUser = getUserFromList(msg.sendBy)
+        holder.msg = msg
+        holder.user = currentUser
         Log.d(TAG, "onBindViewHolder: mUsers: $mUsers")
         Log.d(TAG, "onBindViewHolder: current user: $currentUser")
         if(getItemViewType(position) == MY_MESSAGE){
@@ -99,9 +103,21 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
         val friendProfilePhoto = itemView.findViewById<ShapeableImageView>(R.id.friendProfilePhoto)
         val friendTimestamp = itemView.findViewById<TextView>(R.id.timestampLeft)
         val friendName = itemView.findViewById<TextView>(R.id.displayName)
+        val friendMessageCard = itemView.findViewById<RelativeLayout>(R.id.messageCard)
+        var user: User? = null
+        var msg: Message? = null
 
 
         init {
+                friendMessageCard?.setOnLongClickListener {
+
+                    Log.d(TAG, "LONG PRESSED")
+                    (mContext as MessageActivity).openFriendMessageInformationBottomSheet(
+                        user!!,
+                        msg!!
+                    )
+                    false
+                }
 
 
         }

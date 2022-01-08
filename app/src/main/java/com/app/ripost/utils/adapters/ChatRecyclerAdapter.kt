@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ripost.R
-import com.app.ripost.ui.home.MessageActivity
+import com.app.ripost.ui.message.MessageActivity
 import com.app.ripost.utils.DateUtils
 import com.app.ripost.utils.database.FirebaseMethods
 import com.app.ripost.utils.database.FirebaseRetrieveUserCallback

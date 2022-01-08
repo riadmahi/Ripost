@@ -1,4 +1,4 @@
-package com.app.ripost.ui.home
+package com.app.ripost.ui.message
 
 import android.content.Context
 import android.os.Bundle
@@ -7,15 +7,12 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ripost.R
 import com.app.ripost.utils.DateUtils
 import com.app.ripost.utils.adapters.MessageRecyclerAdapter
-import com.app.ripost.utils.adapters.SearchUsersRecyclerAdapter
-import com.app.ripost.utils.database.FirebaseCallbackGroup
 import com.app.ripost.utils.database.FirebaseCallbackMsg
 import com.app.ripost.utils.database.FirebaseMethods
 import com.app.ripost.utils.database.FirebaseRetrieveUserCallback
@@ -24,7 +21,6 @@ import com.app.ripost.utils.models.Message
 import com.app.ripost.utils.models.User
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 import com.r0adkll.slidr.Slidr
 import com.r0adkll.slidr.model.SlidrConfig
 import com.r0adkll.slidr.model.SlidrPosition
@@ -121,6 +117,15 @@ class MessageActivity : AppCompatActivity() {
     private fun View.hideSoftInput() {
         val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+    }
+
+    fun openFriendMessageInformationBottomSheet(user: User, message: Message){
+        val bottomSheet = FriendMessageBottomSheet()
+        val args = Bundle()
+        args.putParcelable("EXTRA_MESSAGE", message)
+        args.putParcelable("EXTRA_USER", user)
+        bottomSheet.arguments = args
+        bottomSheet.show(supportFragmentManager, "FRIEND_MESSAGE")
     }
     companion object{
         private const val TAG = "MessageActivity"
