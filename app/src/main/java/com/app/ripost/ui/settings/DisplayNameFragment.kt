@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.app.ripost.R
 import com.app.ripost.ui.signUp.SignUpActivity
 import com.app.ripost.utils.database.FirebaseMethods
+import com.app.ripost.utils.models.User
 import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.fragment_display_name.view.*
 import kotlinx.android.synthetic.main.snippet_toolbar.view.*
@@ -27,6 +28,8 @@ class DisplayNameFragment : Fragment() {
             view.progressView.visibility = View.GONE
             view.toolbar.visibility = View.VISIBLE
             view.toolbarText.text = "Display name"
+            val user = arguments?.getParcelable<User>("EXTRA_USER")
+            view.displayName.setText(user?.displayName)
             PushDownAnim.setPushDownAnimTo(view.back).setOnClickListener {
                 requireActivity().supportFragmentManager
                         .beginTransaction()

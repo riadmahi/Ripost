@@ -19,16 +19,18 @@ import com.bumptech.glide.Glide
 import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.layout_bottom_navigation.*
+import kotlinx.android.synthetic.main.snippet_profile_follow.*
 import kotlinx.android.synthetic.main.snippet_profile_information.*
 
 class ProfileActivity: AppCompatActivity() {
 
+    private var mUser: User = User()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         setupBottomNavigation()
         PushDownAnim.setPushDownAnimTo(editProfile).setOnClickListener {
-            val intent = Intent(this, SettingsActivity::class.java)
+            val intent = Intent(this, SettingsActivity::class.java).putExtra("EXTRA_USER", mUser)
             startActivity(intent)
         }
         setupUserInformation()
@@ -67,6 +69,7 @@ class ProfileActivity: AppCompatActivity() {
         FirebaseMethods(this).getUserInformation(object: FirebaseRetrieveUserCallback{
             @SuppressLint("SetTextI18n")
             override fun onFinish(user: User) {
+                mUser = user
                 username.text = "@${user.username}"
                 displayName.text = user.displayName
                 if (user.photoUrl != ""){
@@ -77,6 +80,9 @@ class ProfileActivity: AppCompatActivity() {
 
                 }
                 biography.text = user.biography
+                numFollowing.text = user.following.toString()
+                numFollowers.text = user.followers.toString()
+
             }
         })
 

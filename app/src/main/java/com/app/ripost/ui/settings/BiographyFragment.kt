@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.app.ripost.R
 import com.app.ripost.ui.home.MainActivity
 import com.app.ripost.utils.database.FirebaseMethods
+import com.app.ripost.utils.models.User
 import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.fragment_biography.*
 import kotlinx.android.synthetic.main.fragment_biography.view.*
@@ -31,6 +32,9 @@ class BiographyFragment : Fragment() {
             view.toolbar.visibility = View.VISIBLE
             view.toolbarText.text = "Biography"
             isSetting = true
+            val user = arguments?.getParcelable<User>("EXTRA_USER")
+
+            view.biography.setText(user?.biography)
 
             PushDownAnim.setPushDownAnimTo(view.back).setOnClickListener {
                 requireActivity().supportFragmentManager
