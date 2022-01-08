@@ -18,6 +18,7 @@ import com.app.ripost.utils.adapters.SearchUsersRecyclerAdapter
 import com.app.ripost.utils.database.FirebaseCallbackGroup
 import com.app.ripost.utils.database.FirebaseCallbackMsg
 import com.app.ripost.utils.database.FirebaseMethods
+import com.app.ripost.utils.database.FirebaseRetrieveUserCallback
 import com.app.ripost.utils.models.Group
 import com.app.ripost.utils.models.Message
 import com.app.ripost.utils.models.User
@@ -38,6 +39,8 @@ class MessageActivity : AppCompatActivity() {
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter: MessageRecyclerAdapter? = null
     private var isSeen = false
+
+    private var mUsers : MutableList<User> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +65,14 @@ class MessageActivity : AppCompatActivity() {
         FirebaseMethods(this@MessageActivity).getMessageInRealTime(mGroup?.groupID.toString(),mMessages, object: FirebaseCallbackMsg{
             override fun onSuccess(messages: MutableList<Message>) {
                 mMessages = messages
-                setAdapter()
+                for(user in mGroup?.members!!){
+                    FirebaseMethods(this@MessageActivity).retrieveUserInformationFromUID(user, object : FirebaseRetrieveUserCallback{
+                        override fun onFinish(user: User) {
+                            mUsers.add(user)
+                            setAdapter()
+                        }
+                    })
+                }
             }
         })
 
@@ -92,6 +102,7 @@ class MessageActivity : AppCompatActivity() {
         }
         val config = SlidrConfig.Builder().position(SlidrPosition.RIGHT)
             .build()
+
         Slidr.attach(this, config)
 
     }
@@ -100,7 +111,7 @@ class MessageActivity : AppCompatActivity() {
         layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         if (adapter == null){
             messageRecycler.layoutManager = layoutManager
-            adapter = MessageRecyclerAdapter(this, mMessages, mGroup!!)
+            adapter = MessageRecyclerAdapter(this, mMessages, mGroup!!, mUsers)
             messageRecycler.adapter = adapter
         }else{
             adapter!!.notifyDataSetChanged()

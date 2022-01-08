@@ -91,6 +91,14 @@ class FirebaseMethods(private val context: Context) {
         )
     }
 
+    fun updateToken(token: String){
+        db.collection(context.getString(R.string.dbname_users)).document(uid).update(
+                context.getString(
+                        R.string.field_token
+                ), token
+        )
+    }
+
     fun uploadProfilePhoto(imgUri: Uri, callback: FirebaseCallback){
         val uid = auth.uid.toString()
         val storageReference: StorageReference = FirebaseStorage.getInstance().reference

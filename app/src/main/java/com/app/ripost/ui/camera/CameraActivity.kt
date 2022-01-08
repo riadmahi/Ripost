@@ -102,8 +102,8 @@ class CameraActivity : AppCompatActivity(){
         }
 
         myMoments.setOnClickListener {
-            val bottomSheet = MyMomentsBottomSheet()
-            bottomSheet.show(supportFragmentManager, "")
+            val intent = Intent(this, MyMomentsActivity::class.java)
+            startActivity(intent)
         }
     }
 

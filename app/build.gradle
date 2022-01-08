@@ -79,6 +79,9 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-messaging-ktx'
 
+    implementation project(':spotify-app-remote')
+    implementation "com.google.code.gson:gson:2.8.5"
+
 
 
 

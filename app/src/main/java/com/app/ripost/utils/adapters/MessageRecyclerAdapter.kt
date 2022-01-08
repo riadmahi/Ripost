@@ -2,6 +2,7 @@ package com.app.ripost.utils.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +12,13 @@ import com.app.ripost.R
 import com.app.ripost.utils.DateUtils
 import com.app.ripost.utils.models.Group
 import com.app.ripost.utils.models.Message
+import com.app.ripost.utils.models.User
+import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 
-class MessageRecyclerAdapter (private val mContext: Context, private val mMessages: MutableList<Message>, private val group: Group
+class MessageRecyclerAdapter (private val mContext: Context, private val mMessages: MutableList<Message>, private val group: Group,
+                              private val mUsers: MutableList<User>
 )
     : RecyclerView.Adapter<MessageRecyclerAdapter.ViewHolder>() {
 
@@ -42,14 +46,40 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val msg = mMessages[position]
+        val currentUser = getUserFromList(msg.sendBy)
+        Log.d(TAG, "onBindViewHolder: mUsers: $mUsers")
+        Log.d(TAG, "onBindViewHolder: current user: $currentUser")
         if(getItemViewType(position) == MY_MESSAGE){
             holder.myTextMessage.text = msg.message
             holder.myTimestamp.text =  DateUtils().getDate(msg.dateCreated)
+            Glide.with(mContext)
+                    .load(currentUser.photoUrl)
+                    .into(holder.myProfilePhoto)
         }else{
             holder.friendTextMessage.text = msg.message
             holder.friendTimestamp.text =  DateUtils().getDate(msg.dateCreated)
+            holder.friendName.text = currentUser.displayName
+            Glide.with(mContext)
+                    .load(currentUser.photoUrl)
+                    .into(holder.friendProfilePhoto)
         }
 
+
+    }
+
+    private fun getUserFromList(userID: String): User{
+        var i=0
+        var isFind = false
+        var user = User()
+        while(i<mUsers.size && !isFind){
+            if (mUsers[i].uid == userID) {
+                isFind = true
+                user = mUsers[i]
+            }
+            i++
+        }
+
+        return user
 
     }
 
@@ -62,12 +92,13 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
 
         val myTextMessage = itemView.findViewById<TextView>(R.id.textMessageRight)
         val myProfilePhoto = itemView.findViewById<ShapeableImageView>(R.id.profilePhotoRight)
-        val myTimestamp = itemView.findViewById<TextView>(R.id.timestampLeft)
+        val myTimestamp = itemView.findViewById<TextView>(R.id.timestampRight)
 
 
         val friendTextMessage = itemView.findViewById<TextView>(R.id.textMessageLeft)
         val friendProfilePhoto = itemView.findViewById<ShapeableImageView>(R.id.friendProfilePhoto)
         val friendTimestamp = itemView.findViewById<TextView>(R.id.timestampLeft)
+        val friendName = itemView.findViewById<TextView>(R.id.displayName)
 
 
         init {
