@@ -26,7 +26,7 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        if(getItemViewType(viewType) == MY_MESSAGE)
+        if(viewType == MY_MESSAGE)
             return ViewHolder(
                     LayoutInflater.from(mContext).inflate(
                             R.layout.layout_item_message_right,
@@ -62,7 +62,6 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
         }else{
             holder.friendTextMessage.text = msg.message
             holder.friendTimestamp.text =  DateUtils().getDate(msg.dateCreated)
-            holder.friendName.text = currentUser.displayName
             Glide.with(mContext)
                     .load(currentUser.photoUrl)
                     .into(holder.friendProfilePhoto)
@@ -102,7 +101,6 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
         val friendTextMessage = itemView.findViewById<TextView>(R.id.textMessageLeft)
         val friendProfilePhoto = itemView.findViewById<ShapeableImageView>(R.id.friendProfilePhoto)
         val friendTimestamp = itemView.findViewById<TextView>(R.id.timestampLeft)
-        val friendName = itemView.findViewById<TextView>(R.id.displayName)
         val friendMessageCard = itemView.findViewById<RelativeLayout>(R.id.messageCard)
         var user: User? = null
         var msg: Message? = null
@@ -110,7 +108,6 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
 
         init {
                 friendMessageCard?.setOnLongClickListener {
-
                     Log.d(TAG, "LONG PRESSED")
                     (mContext as MessageActivity).openFriendMessageInformationBottomSheet(
                         user!!,

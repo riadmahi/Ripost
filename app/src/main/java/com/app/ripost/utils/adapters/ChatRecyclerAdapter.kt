@@ -11,6 +11,8 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ripost.R
+import com.app.ripost.ui.home.ChatFragment
+import com.app.ripost.ui.home.MainActivity
 import com.app.ripost.ui.message.MessageActivity
 import com.app.ripost.utils.DateUtils
 import com.app.ripost.utils.database.FirebaseMethods
@@ -57,7 +59,6 @@ class ChatRecyclerAdapter (private val mContext: Context, private val mGroups: M
             var mUser: User? = null
             FirebaseMethods(mContext).retrieveUserInformationFromUID(friendUid, object: FirebaseRetrieveUserCallback{
                 override fun onFinish(user: User) {
-                    holder.displayName.text = user.displayName
                     Glide.with(mContext)
                             .asBitmap()
                             .load(user.photoUrl)
@@ -101,11 +102,16 @@ class ChatRecyclerAdapter (private val mContext: Context, private val mGroups: M
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val profilePhoto = itemView.findViewById<ShapeableImageView>(R.id.profile_photo)
-        val displayName = itemView.findViewById<TextView>(R.id.displayName)
         val chatCard = itemView.findViewById<LinearLayout>(R.id.chatCard)
         val seenIndicator = itemView.findViewById<CardView>(R.id.seenIndicator)
         val timestamp = itemView.findViewById<TextView>(R.id.timestamp)
 
+        init{
+            chatCard.setOnLongClickListener {
+                (mContext as MainActivity).openChatInformationFragment()
+                false
+            }
+        }
     }
 
 

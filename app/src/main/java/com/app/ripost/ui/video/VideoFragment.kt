@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.app.ripost.R
+import com.app.ripost.ui.home.MainActivity
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.MediaItem.fromUri
@@ -16,6 +17,7 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.DataSource
+import kotlinx.android.synthetic.main.fragment_video.view.*
 import kotlinx.android.synthetic.main.snippet_video_reaction.view.*
 
 class VideoFragment() : Fragment() {
@@ -46,6 +48,11 @@ class VideoFragment() : Fragment() {
                 view.like.playAnimation()
                 false
             }
+        }
+
+        view.videoCard.setOnLongClickListener {
+            (requireActivity() as MainActivity).openViewVideoInformationFragment()
+            false
         }
         return view
     }

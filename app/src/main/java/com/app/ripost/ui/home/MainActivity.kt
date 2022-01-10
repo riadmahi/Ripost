@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.app.ripost.R
+import com.app.ripost.ui.message.ChatBottomSheet
 import com.app.ripost.ui.message.MessageActivity
+import com.app.ripost.ui.video.ViewVideoBottomSheet
 import com.app.ripost.ui.welcome.WelcomeActivity
 import com.app.ripost.utils.adapters.MainViewPagerAdapter
 import com.app.ripost.utils.BottomNavigationHelper
@@ -161,10 +163,14 @@ class MainActivity : AppCompatActivity() {
                 super.onBackPressed()
         }
     }
+    fun openViewVideoInformationFragment(){
+        val bottomSheet = ViewVideoBottomSheet()
+        bottomSheet.show(supportFragmentManager, "")
+    }
 
-    fun openMessageFragment(group: Group){
-        val intent = Intent(this, MessageActivity::class.java).putExtra("EXTRA_GROUP", group)
-        startActivity(intent)
+    fun openChatInformationFragment(){
+        val bottomSheet = ChatBottomSheet()
+        bottomSheet.show(supportFragmentManager, "CHAT")
     }
 
     companion object{
