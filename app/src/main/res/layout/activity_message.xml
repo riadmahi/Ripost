@@ -33,19 +33,32 @@
             android:fontFamily="@font/work_sans_medium"
             android:textColor="@color/white"
             android:textSize="16sp"/>
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_gravity="center_vertical"
+            android:gravity="end"
+            android:orientation="horizontal"
             android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:id="@+id/members"
+                android:src="@drawable/ic_group"
+                android:tint="@color/white"
+                android:visibility="visible"
+                android:layout_marginEnd="20dp"/>
+
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_ellipses"
-                android:layout_alignParentEnd="true"
                 android:layout_marginEnd="20dp"
                 android:tint="@color/white"/>
-        </RelativeLayout>
+        </LinearLayout>
+
+
 
 
 
@@ -129,5 +142,10 @@
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/container"/>
 
 </RelativeLayout>

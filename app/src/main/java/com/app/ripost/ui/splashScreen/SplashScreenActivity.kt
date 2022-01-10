@@ -22,7 +22,7 @@ class SplashScreenActivity : AppCompatActivity() {
         val timer = Timer()
         timer.schedule(timerTask {
             Log.d(TAG, "onCreate: 1.8s done move to MainActivity.")
-            val intent = Intent(this@SplashScreenActivity, CameraActivity::class.java)
+            val intent = Intent(this@SplashScreenActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
         }, 1200)

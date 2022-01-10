@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.thekhaeng.pushdownanim.PushDownAnim
+import org.w3c.dom.Text
 
 class ChatRecyclerAdapter (private val mContext: Context, private val mGroups: MutableList<Group>
 )
@@ -59,6 +60,7 @@ class ChatRecyclerAdapter (private val mContext: Context, private val mGroups: M
             var mUser: User? = null
             FirebaseMethods(mContext).retrieveUserInformationFromUID(friendUid, object: FirebaseRetrieveUserCallback{
                 override fun onFinish(user: User) {
+                    holder.displayName.text = user.displayName
                     Glide.with(mContext)
                             .asBitmap()
                             .load(user.photoUrl)
@@ -105,6 +107,7 @@ class ChatRecyclerAdapter (private val mContext: Context, private val mGroups: M
         val chatCard = itemView.findViewById<LinearLayout>(R.id.chatCard)
         val seenIndicator = itemView.findViewById<CardView>(R.id.seenIndicator)
         val timestamp = itemView.findViewById<TextView>(R.id.timestamp)
+        val displayName = itemView.findViewById<TextView>(R.id.displayName)
 
         init{
             chatCard.setOnLongClickListener {

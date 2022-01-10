@@ -2,6 +2,7 @@ package com.app.ripost.ui.message
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ripost.R
+import com.app.ripost.ui.settings.DisplayNameFragment
 import com.app.ripost.utils.DateUtils
 import com.app.ripost.utils.adapters.MessageRecyclerAdapter
 import com.app.ripost.utils.database.FirebaseCallbackMsg
@@ -26,6 +28,7 @@ import com.r0adkll.slidr.model.SlidrConfig
 import com.r0adkll.slidr.model.SlidrPosition
 import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.activity_message.*
+import java.util.ArrayList
 
 class MessageActivity : AppCompatActivity() {
 
@@ -99,6 +102,16 @@ class MessageActivity : AppCompatActivity() {
         val config = SlidrConfig.Builder().position(SlidrPosition.RIGHT)
             .build()
 
+        members.setOnClickListener {
+            val fragment = ViewMembersFragment()
+            val args = Bundle()
+            args.putParcelable("EXTRA_GROUP", mGroup)
+            args.putParcelableArrayList("EXTRA_ARRAY_USER", ArrayList<Parcelable>(mUsers))
+            fragment.arguments = args
+            supportFragmentManager.beginTransaction()
+                    .add(R.id.container, fragment, "FROM_MESSAGE")
+                    .commit()
+        }
         Slidr.attach(this, config)
 
     }

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_bottom_line"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:id="@+id/chatCard"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/profile_photo"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/default_photo"
+            android:scaleType="centerCrop"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="220dp"
+                    android:ellipsize="end"
+                    android:text="Riad Mahi"
+                    android:layout_marginStart="15dp"
+                    android:textSize="15sp"
+                    android:id="@+id/displayName"
+                    android:fontFamily="@font/work_sans_medium"
+                    android:layout_gravity="center"
+                    android:textColor="@color/white"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="15dp"
+                    android:padding="2dp"
+                    android:id="@+id/creator"
+                    android:visibility="gone"
+                    android:background="@drawable/bg_rounded_input"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/ic_star"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_horizontal"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Creator"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="@font/work_sans_medium"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="10dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="15dp"
+                    android:padding="2dp"
+                    android:id="@+id/moderator"
+                    android:visibility="gone"
+                    android:background="@drawable/bg_rounded_input"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/ic_bolt"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_horizontal"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Moderator"
+                        android:layout_gravity="center_vertical"
+                        android:fontFamily="@font/work_sans_medium"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="10dp"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

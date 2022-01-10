@@ -255,7 +255,7 @@ class FirebaseMethods(private val context: Context) {
         val colors : ArrayList<String> = ArrayList()
         colors.add("$uid|#19D099")
         colors.add("$userID|#C7B4FF")
-        val group = Group(id, uid, DateUtils().getTimestamp(), members, "New conversation", seen, colors, "", "null", DateUtils().getTimestamp())
+        val group = Group(id, uid, DateUtils().getTimestamp(), members, "New conversation", seen, "", "null", DateUtils().getTimestamp(), seen)
         db.collection(context.getString(R.string.dbname_groups)).document(id).set(group)
     }
     fun removeFriend(userID: String){
