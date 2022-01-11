@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -48,6 +49,16 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val msg = mMessages[position]
+
+        val splitMessage = msg.message.split(":::")
+        if(splitMessage[0]=="replyTo"){
+            if(getItemViewType(position) == MY_MESSAGE){
+                holder.myReply.visibility = View.VISIBLE
+                holder.myTextReply.text = splitMessage[1]
+            }
+            msg.message = splitMessage[2]
+        }
+
         if(position == 0){
             if(getItemViewType(position) == MY_MESSAGE){
                 holder.myMessageDate.text = DateUtils().getDate(msg.dateCreated)
@@ -112,6 +123,8 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
 
     }
 
+
+
     private fun getUserFromList(userID: String): User{
         var i=0
         var isFind = false
@@ -139,6 +152,9 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
         val myProfilePhoto = itemView.findViewById<ShapeableImageView>(R.id.profilePhotoRight)
         val myTimestamp = itemView.findViewById<TextView>(R.id.timestampRight)
         val myMessageDate = itemView.findViewById<TextView>(R.id.messageDateRight)
+        val myMessageCard = itemView.findViewById<RelativeLayout>(R.id.myMessageCard)
+        val myReply = itemView.findViewById<LinearLayout>(R.id.myReply)
+        val myTextReply = itemView.findViewById<TextView>(R.id.myTextReply)
 
 
         val friendTextMessage = itemView.findViewById<TextView>(R.id.textMessageLeft)
@@ -151,14 +167,22 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
 
 
         init {
-                friendMessageCard?.setOnLongClickListener {
-                    Log.d(TAG, "LONG PRESSED")
-                    (mContext as MessageActivity).openFriendMessageInformationBottomSheet(
+            friendMessageCard?.setOnLongClickListener {
+                (mContext as MessageActivity).openFriendMessageInformationBottomSheet(
+                    user!!,
+                    msg!!
+                )
+                false
+            }
+
+            myMessageCard?.setOnLongClickListener {
+                (mContext as MessageActivity).openMyMessageInformationBottomSheet(
                         user!!,
                         msg!!
-                    )
-                    false
-                }
+                )
+                false
+            }
+
 
 
         }

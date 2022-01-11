@@ -6,15 +6,16 @@
     android:layout_marginTop="5dp"
     android:minHeight="35dp">
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         android:textAlignment="center"
         android:fontFamily="@font/work_sans_regular"
         android:id="@+id/messageDateRight"/>
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_alignParentEnd="true"
@@ -22,7 +23,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_item_message_right"
         android:minHeight="35dp"
-        android:id="@+id/rel"
+        android:id="@+id/myMessageCard"
 
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
@@ -43,10 +44,42 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/myReply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/myMessageCard"
+        android:layout_alignStart="@id/myMessageCard"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="80dp"
+        android:layout_marginStart="-60dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:rotation="180"
+            android:src="@drawable/ic_forward"
+            android:tint="@color/placeholder" />
+
+        <TextView
+            android:id="@+id/myTextReply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:fontFamily="@font/work_sans_regular"
+            android:lines="1"
+            android:text=""
+            android:textColor="@color/placeholder"
+            android:textSize="13sp" />
+    </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rel"
+        android:layout_below="@id/myMessageCard"
         android:text=""
         android:fontFamily="@font/work_sans_regular"
         android:layout_alignParentEnd="true"
@@ -58,7 +91,7 @@
         android:layout_height="35dp"
         android:layout_gravity="center_vertical"
         android:layout_alignParentEnd="true"
-        android:layout_below="@id/rel"
+        android:layout_below="@id/myMessageCard"
         android:layout_marginTop="-20dp"
         android:id="@+id/profilePhotoRight"
         android:src="@drawable/default_photo"

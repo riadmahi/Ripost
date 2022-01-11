@@ -1,6 +1,7 @@
 package com.app.ripost.ui.message
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,15 +33,25 @@ class FriendMessageBottomSheet : BottomSheetDialogFragment() {
         view.displayName.text = user?.displayName
         view.textMessage.text = message?.message
         view.timestampLeft.text = DateUtils().getDate(message?.dateCreated.toString())
-        if (checkIfUserIsModerator() && group?.createdBy == FirebaseAuth.getInstance().uid){
+        if (checkIfUserIsModerator() && group!!.createdBy == FirebaseAuth.getInstance().uid){
+            Log.d(TAG, "onCreateView: user is moderator and i'm creator")
             view.unPromoteModerator.visibility = View.VISIBLE
             view.unPromoteModerator.setOnClickListener {
                 FirebaseMethods(requireContext()).removeModerator(group!!.groupID,  user!!.uid)
+                dialog?.hide()
             }
-        }else if(group?.createdBy == FirebaseAuth.getInstance().uid || checkIfImModerator()){
+        }else if(group!!.createdBy == FirebaseAuth.getInstance().currentUser?.uid || checkIfImModerator()){
+            Log.d(TAG, "onCreateView: I'm moderator or creator")
             view.promoteModerator.visibility = View.VISIBLE
             view.promoteModerator.setOnClickListener {
                 FirebaseMethods(requireContext()).addModerator(group!!.groupID,  user!!.uid)
+                dialog?.hide()
+            }
+
+            view.deleteMessage.visibility = View.VISIBLE
+            view.deleteMessage.setOnClickListener {
+                FirebaseMethods(requireContext()).removeMessage(message!!.messageID, group!!.groupID)
+                dialog?.hide()
             }
         }
         return view
@@ -66,5 +77,9 @@ class FriendMessageBottomSheet : BottomSheetDialogFragment() {
             i++
         }
         return isFind
+    }
+
+    companion object{
+        private const val TAG = "FriendMessageBottomSheet"
     }
 }

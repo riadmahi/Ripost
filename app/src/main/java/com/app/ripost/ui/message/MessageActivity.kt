@@ -39,6 +39,7 @@ class MessageActivity : AppCompatActivity() {
     private var layoutManager: RecyclerView.LayoutManager? = null
     private var adapter: MessageRecyclerAdapter? = null
     private var isSeen = false
+    private var replyMessageId = ""
 
     private var mUsers : MutableList<User> = mutableListOf()
 
@@ -94,9 +95,18 @@ class MessageActivity : AppCompatActivity() {
         })
 
         PushDownAnim.setPushDownAnimTo(send).setOnClickListener {
-            val message = Message(messageInput.text.toString(), DateUtils().getTimestamp(), FirebaseAuth.getInstance().uid.toString())
-            FirebaseMethods(this).sendMessage(mGroup?.groupID.toString(), message)
-            FirebaseMethods(this).updateLastGroupMessage(mGroup?.groupID.toString(), message)
+            val messageID = FirebaseMethods(this).getRandomID()
+            if(replyBanner.visibility == View.GONE) {
+                val message = Message(messageID, messageInput.text.toString(), DateUtils().getTimestamp(), FirebaseAuth.getInstance().uid.toString(), ArrayList())
+                FirebaseMethods(this).sendMessage(mGroup?.groupID.toString(), message)
+                FirebaseMethods(this).updateLastGroupMessage(mGroup?.groupID.toString(), message)
+            }else{
+                val replyMessage = "replyTo:::$replyMessageId:::${messageInput.text}"
+                val message = Message(messageID, replyMessage, DateUtils().getTimestamp(), FirebaseAuth.getInstance().uid.toString(), ArrayList())
+                FirebaseMethods(this).sendMessage(mGroup?.groupID.toString(), message)
+                FirebaseMethods(this).updateLastGroupMessage(mGroup?.groupID.toString(), message)
+                replyBanner.visibility = View.GONE
+            }
             send.hideSoftInput()
             messageInput.setText("")
         }
@@ -140,13 +150,30 @@ class MessageActivity : AppCompatActivity() {
         inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
     }
 
+    fun showReplyBanner(message: Message){
+        replyBanner.visibility = View.VISIBLE
+        textReply.text = message.message
+        replyMessageId = message.messageID
+    }
+
     fun openFriendMessageInformationBottomSheet(user: User, message: Message){
         val bottomSheet = FriendMessageBottomSheet()
         val args = Bundle()
         args.putParcelable("EXTRA_MESSAGE", message)
         args.putParcelable("EXTRA_USER", user)
+        args.putParcelable("EXTRA_GROUP", mGroup)
         bottomSheet.arguments = args
         bottomSheet.show(supportFragmentManager, "FRIEND_MESSAGE")
+    }
+
+    fun openMyMessageInformationBottomSheet(user: User, message: Message){
+        val bottomSheet = MyMessageBottomSheet()
+        val args = Bundle()
+        args.putParcelable("EXTRA_MESSAGE", message)
+        args.putParcelable("EXTRA_USER", user)
+        args.putParcelable("EXTRA_GROUP", mGroup)
+        bottomSheet.arguments = args
+        bottomSheet.show(supportFragmentManager, "MY_MESSAGE")
     }
 
 

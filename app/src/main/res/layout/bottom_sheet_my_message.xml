@@ -25,28 +25,17 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_item_message_left"
                 android:minHeight="35dp"
                 android:id="@+id/rel"
                 android:layout_alignParentStart="true"
                 android:layout_marginEnd="80dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:fontFamily="@font/work_sans_medium"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@color/white"
-                    android:layout_marginEnd="15dp"
-                    android:id="@+id/displayName"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
                     android:id="@+id/textMessage"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="15dp"
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginBottom="10dp"
@@ -89,6 +78,7 @@
             android:padding="5dp"
             android:background="?android:attr/selectableItemBackground"
             android:focusable="true"
+            android:id="@+id/reply"
             android:clickable="true"
             android:orientation="horizontal">
 
@@ -242,38 +232,8 @@
             android:padding="5dp"
             android:background="?android:attr/selectableItemBackground"
             android:focusable="true"
-            android:clickable="true"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_flag"
-                android:layout_marginStart="20dp"
-                android:tint="@color/placeholder"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Report"
-                android:layout_gravity="center_vertical"
-                android:textColor="@color/white"
-                android:fontFamily="@font/work_sans_regular"
-                android:textSize="15sp"
-                android:layout_marginStart="20dp"/>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:padding="5dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:focusable="true"
             android:id="@+id/deleteMessage"
             android:clickable="true"
-            android:visibility="gone"
             android:orientation="horizontal">
 
             <ImageView
@@ -295,7 +255,6 @@
                 android:layout_marginStart="20dp"/>
 
         </LinearLayout>
-
 
     </LinearLayout>
 

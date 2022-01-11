@@ -310,8 +310,7 @@ class FirebaseMethods(private val context: Context) {
     }
 
     fun sendMessage(groupID: String, msg: Message){
-        val id = db.collection(context.getString(R.string.dbname_messages)).document().id
-        db.collection(context.getString(R.string.dbname_messages)).document(groupID).collection("Message").document(id).set(msg)
+        db.collection(context.getString(R.string.dbname_messages)).document(groupID).collection("Message").document(msg.messageID).set(msg)
     }
 
 
@@ -368,6 +367,52 @@ class FirebaseMethods(private val context: Context) {
     fun addModerator(groupID: String, moderator: String){
         db.collection(context.getString(R.string.dbname_groups)).document(groupID).update("moderators", FieldValue.arrayUnion(moderator))
     }
+
+    fun deleteGroup(groupID: String){
+        deleteAllGroupMessages(groupID)
+        db.collection(context.getString(R.string.dbname_groups)).document(groupID).delete()
+    }
+
+    fun leaveGroup(group: Group){
+        val uidNewCreator = if(group.members[0] == uid) group.members[1] else group.members[0]
+        when {
+            group.members.size == 2 -> {
+                //Delete the group.
+                deleteAllGroupMessages(group.groupID)
+                db.collection(context.getString(R.string.dbname_groups)).document(group.groupID).delete()
+            }
+            uid==group.createdBy -> {
+                //Transmit the creator role
+                db.collection(context.getString(R.string.dbname_groups)).document(group.groupID).update("createdBy", uidNewCreator)
+                db.collection(context.getString(R.string.dbname_groups)).document(group.groupID).update("members", FieldValue.arrayRemove(uid))
+            }
+            else -> {
+                db.collection(context.getString(R.string.dbname_groups)).document(group.groupID).update("members", FieldValue.arrayRemove(uid))
+            }
+        }
+    }
+
+    fun kickUserInGroup(userKickID: String, groupID: String){
+        db.collection(context.getString(R.string.dbname_groups)).document(groupID).update("members", FieldValue.arrayRemove(userKickID))
+    }
+
+    fun removeMessage(messageID: String, groupID: String){
+        db.collection(context.getString(R.string.dbname_messages)).document(groupID).collection("Message").document(messageID).delete()
+    }
+
+    fun findMessageThanksToID(groupID: String, messageID: String): String{
+        return ""
+    }
+
+    fun deleteAllGroupMessages(groupID: String){
+        db.collection(context.getString(R.string.dbname_messages))
+                .document(groupID).delete()
+    }
+
+    fun getRandomID(): String{
+        return db.collection(context.getString(R.string.dbname_messages)).document().id
+    }
+
 
     companion object{
         private const val TAG = "FirebaseMethods"
