@@ -27,14 +27,13 @@ class DateUtils {
         val value = formatter.parse(date)
 
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'") //this format changeable
-
         dateFormatter.timeZone = TimeZone.getDefault()
         val newDate = dateFormatter.format(value)
         var sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
         val mDate = sdf.parse(newDate)
         Log.d(TAG, "getDate: $")
         val mMs = mDate.time
-        sdf  = SimpleDateFormat("EEEE, dd MMMM yyyy") // the format of your date
+        sdf  = SimpleDateFormat("EEEE dd MMMM yyyy") // the format of your date
         var time = ""
         if(todayDate()==sdf.format(mMs)){
             time = "Today"

@@ -9,6 +9,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:textAlignment="center"
         android:fontFamily="@font/work_sans_regular"
         android:id="@+id/messageDateRight"/>
@@ -29,9 +32,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bonjour "
+            android:text="Bonjour, "
             android:id="@+id/textMessageRight"
             android:layout_centerInParent="true"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:textColor="@color/white"
             android:fontFamily="@font/work_sans_regular"
             android:textSize="15sp"/>

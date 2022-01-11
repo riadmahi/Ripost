@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ripost.R
 import com.app.ripost.ui.settings.DisplayNameFragment
+import com.app.ripost.ui.settings.SettingsActivity
 import com.app.ripost.utils.DateUtils
 import com.app.ripost.utils.adapters.MessageRecyclerAdapter
 import com.app.ripost.utils.database.FirebaseCallbackMsg
@@ -147,6 +148,21 @@ class MessageActivity : AppCompatActivity() {
         bottomSheet.arguments = args
         bottomSheet.show(supportFragmentManager, "FRIEND_MESSAGE")
     }
+
+
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentByTag("FROM_MESSAGE")
+        Log.d(TAG, "onBackPressed: fragment find $fragment")
+        if (fragment != null) {
+            Log.d(TAG, "onBackPressed: pressed")
+            supportFragmentManager.beginTransaction().remove(fragment).commit()
+        }else{
+            //No fragment, close the activity
+            super.onBackPressed()
+        }
+
+    }
+
     companion object{
         private const val TAG = "MessageActivity"
     }

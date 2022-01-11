@@ -55,8 +55,9 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
                 holder.friendMessageDate.text = DateUtils().getDate(msg.dateCreated)
             }
         }
+
+        //Show the current date like Monday 22 December
         if(position in 1 until itemCount){
-            //Vérifier si la date est différente de celle d'avant
             val myLastMessage = mMessages[position-1]
             if(DateUtils().getDay(msg.dateCreated) == DateUtils().getDay(myLastMessage.dateCreated)){
                 if(getItemViewType(position) == MY_MESSAGE){
@@ -72,6 +73,23 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
                 }
             }
         }
+
+        //Hide Profile Photo and Time stamp for the message with the same minutes
+
+        if(position in 0 until itemCount-1){
+            val mNextMessage = mMessages[position+1]
+            if(DateUtils().getTime(msg.dateCreated) == DateUtils().getTime(mNextMessage.dateCreated)
+                    && msg.sendBy == mNextMessage.sendBy){
+                if(getItemViewType(position) == MY_MESSAGE){
+                    holder.myTimestamp.visibility = View.GONE
+                    holder.myProfilePhoto.visibility = View.GONE
+                }else{
+                    holder.friendTimestamp.visibility = View.GONE
+                    holder.friendProfilePhoto.visibility = View.GONE
+                }
+            }
+        }
+
         val currentUser = getUserFromList(msg.sendBy)
         holder.msg = msg
         holder.user = currentUser

@@ -56,6 +56,8 @@
     <string name="dbname_friends">Friends</string>
     <string name="dbname_groups">Groups</string>
     <string name="dbname_messages">Messages</string>
+    <string name="dbname_comments">Comments</string>
+    <string name="dbname_likes">Likes</string>
     <string name="field_username">username</string>
     <string name="field_display_name">displayName</string>
     <string name="field_email">email</string>

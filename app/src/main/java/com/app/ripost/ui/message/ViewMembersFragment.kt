@@ -14,6 +14,7 @@ import com.app.ripost.utils.adapters.ViewMembersRecyclerAdapter
 import com.app.ripost.utils.models.Group
 import com.app.ripost.utils.models.User
 import kotlinx.android.synthetic.main.fragment_view_members.view.*
+import kotlinx.android.synthetic.main.snippet_toolbar.view.*
 
 class ViewMembersFragment : Fragment() {
 
@@ -27,11 +28,19 @@ class ViewMembersFragment : Fragment() {
         Log.d(TAG, "onCreateView: group =$mGroup")
         mUsers = arguments?.getParcelableArrayList("EXTRA_ARRAY_USER")!!
         Log.d(TAG, "onCreateView: mUsers found = $mUsers")
+        view.toolbarText.text = "Members"
 
         val layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
         view.viewMembersRecycler.layoutManager = layoutManager
         val adapter = ViewMembersRecyclerAdapter(requireContext(), mGroup!!, mUsers)
         view.viewMembersRecycler.adapter = adapter
+
+        view.back.setOnClickListener {
+            requireActivity().supportFragmentManager
+                    .beginTransaction()
+                    .remove(this)
+                    .commit()
+        }
         return view
     }
 
