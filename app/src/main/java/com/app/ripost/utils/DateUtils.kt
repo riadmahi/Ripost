@@ -34,19 +34,47 @@ class DateUtils {
         val mDate = sdf.parse(newDate)
         Log.d(TAG, "getDate: $")
         val mMs = mDate.time
-        sdf  = SimpleDateFormat("dd-MM") // the format of your date
+        sdf  = SimpleDateFormat("EEEE, dd MMMM yyyy") // the format of your date
         var time = ""
-        time += if(todayDate()==sdf.format(mMs)){
-            "Today at "
-        }else{
-            sdf.format(mMs)+ " at "
+        if(todayDate()==sdf.format(mMs)){
+            time = "Today"
+        }else {
+            time += sdf.format(mMs)
         }
-
-        sdf = SimpleDateFormat("HH:mm a")
-        time += sdf.format(mMs)
         return time
     }
 
+
+    @SuppressLint("SimpleDateFormat")
+    fun getDay(date: String): String{
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        formatter.timeZone = TimeZone.getTimeZone("Canada/Pacific")
+        val value = formatter.parse(date)
+        val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'") //this format changeable
+        dateFormatter.timeZone = TimeZone.getDefault()
+        val newDate = dateFormatter.format(value!!)
+        var sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        val mDate = sdf.parse(newDate)
+        Log.d(TAG, "getDate: $")
+        val mMs = mDate?.time
+        sdf  = SimpleDateFormat("dd-MM") // the format of your date
+        return sdf.format(mMs)
+    }
+
+    fun getTime(date: String): String{
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        formatter.timeZone = TimeZone.getTimeZone("Canada/Pacific")
+        val value = formatter.parse(date)
+        val dateFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'") //this format changeable
+        dateFormatter.timeZone = TimeZone.getDefault()
+        val newDate = dateFormatter.format(value!!)
+        var sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        val mDate = sdf.parse(newDate)
+        Log.d(TAG, "getDate: $")
+        val mMs = mDate?.time
+        sdf  = SimpleDateFormat("HH:mm") // the format of your date
+        return sdf.format(mMs)
+    }
 
     @SuppressLint("SimpleDateFormat")
     private fun todayDate(): String{

@@ -112,9 +112,16 @@ class MessageActivity : AppCompatActivity() {
                     .add(R.id.container, fragment, "FROM_MESSAGE")
                     .commit()
         }
+
+        settings.setOnClickListener {
+            val bottomSheet = GroupSettingsBottomSheet()
+            bottomSheet.show(supportFragmentManager, "FROM_MESSAGE")
+        }
         Slidr.attach(this, config)
 
     }
+
+
 
     private fun setAdapter(){
         layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

@@ -5,8 +5,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:minHeight="35dp">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textAlignment="center"
+        android:fontFamily="@font/work_sans_regular"
+        android:id="@+id/messageDateLeft"/>
+
     <RelativeLayout
         android:layout_width="wrap_content"
+        android:layout_below="@id/messageDateLeft"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_item_message_left"
         android:minHeight="35dp"

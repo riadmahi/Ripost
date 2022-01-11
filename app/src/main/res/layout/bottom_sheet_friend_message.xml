@@ -178,6 +178,70 @@
             android:padding="5dp"
             android:background="?android:attr/selectableItemBackground"
             android:focusable="true"
+            android:visibility="gone"
+            android:id="@+id/promoteModerator"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_star"
+                android:layout_marginStart="20dp"
+                android:tint="@color/placeholder"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Promote moderator"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/white"
+                android:fontFamily="@font/work_sans_regular"
+                android:textSize="15sp"
+                android:layout_marginStart="20dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:focusable="true"
+            android:visibility="gone"
+            android:id="@+id/unPromoteModerator"
+            android:clickable="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_star"
+                android:layout_marginStart="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remove moderator status"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/error"
+                android:fontFamily="@font/work_sans_regular"
+                android:textSize="15sp"
+                android:layout_marginStart="20dp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:focusable="true"
             android:clickable="true"
             android:orientation="horizontal">
 

@@ -361,6 +361,14 @@ class FirebaseMethods(private val context: Context) {
         db.collection(context.getString(R.string.dbname_groups)).document(groupID).update("lastMessageSendAt", msg.dateCreated)
     }
 
+    fun removeModerator(groupID: String, moderator: String){
+        db.collection(context.getString(R.string.dbname_groups)).document(groupID).update("moderators", FieldValue.arrayRemove(moderator))
+    }
+
+    fun addModerator(groupID: String, moderator: String){
+        db.collection(context.getString(R.string.dbname_groups)).document(groupID).update("moderators", FieldValue.arrayUnion(moderator))
+    }
+
     companion object{
         private const val TAG = "FirebaseMethods"
     }

@@ -48,6 +48,30 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val msg = mMessages[position]
+        if(position == 0){
+            if(getItemViewType(position) == MY_MESSAGE){
+                holder.myMessageDate.text = DateUtils().getDate(msg.dateCreated)
+            }else{
+                holder.friendMessageDate.text = DateUtils().getDate(msg.dateCreated)
+            }
+        }
+        if(position in 1 until itemCount){
+            //Vérifier si la date est différente de celle d'avant
+            val myLastMessage = mMessages[position-1]
+            if(DateUtils().getDay(msg.dateCreated) == DateUtils().getDay(myLastMessage.dateCreated)){
+                if(getItemViewType(position) == MY_MESSAGE){
+                    holder.myMessageDate.visibility = View.GONE
+                }else{
+                    holder.friendMessageDate.visibility = View.GONE
+                }
+            }else{
+                if(getItemViewType(position) == MY_MESSAGE){
+                    holder.myMessageDate.text = DateUtils().getDate(msg.dateCreated)
+                }else{
+                    holder.friendMessageDate.text = DateUtils().getDate(msg.dateCreated)
+                }
+            }
+        }
         val currentUser = getUserFromList(msg.sendBy)
         holder.msg = msg
         holder.user = currentUser
@@ -55,13 +79,13 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
         Log.d(TAG, "onBindViewHolder: current user: $currentUser")
         if(getItemViewType(position) == MY_MESSAGE){
             holder.myTextMessage.text = msg.message
-            holder.myTimestamp.text =  DateUtils().getDate(msg.dateCreated)
+            holder.myTimestamp.text =  DateUtils().getTime(msg.dateCreated)
             Glide.with(mContext)
                     .load(currentUser.photoUrl)
                     .into(holder.myProfilePhoto)
         }else{
             holder.friendTextMessage.text = msg.message
-            holder.friendTimestamp.text =  DateUtils().getDate(msg.dateCreated)
+            holder.friendTimestamp.text =  DateUtils().getTime(msg.dateCreated)
             Glide.with(mContext)
                     .load(currentUser.photoUrl)
                     .into(holder.friendProfilePhoto)
@@ -96,12 +120,14 @@ class MessageRecyclerAdapter (private val mContext: Context, private val mMessag
         val myTextMessage = itemView.findViewById<TextView>(R.id.textMessageRight)
         val myProfilePhoto = itemView.findViewById<ShapeableImageView>(R.id.profilePhotoRight)
         val myTimestamp = itemView.findViewById<TextView>(R.id.timestampRight)
+        val myMessageDate = itemView.findViewById<TextView>(R.id.messageDateRight)
 
 
         val friendTextMessage = itemView.findViewById<TextView>(R.id.textMessageLeft)
         val friendProfilePhoto = itemView.findViewById<ShapeableImageView>(R.id.friendProfilePhoto)
         val friendTimestamp = itemView.findViewById<TextView>(R.id.timestampLeft)
         val friendMessageCard = itemView.findViewById<RelativeLayout>(R.id.messageCard)
+        val friendMessageDate = itemView.findViewById<TextView>(R.id.messageDateLeft)
         var user: User? = null
         var msg: Message? = null
 

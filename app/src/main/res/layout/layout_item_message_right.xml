@@ -6,9 +6,16 @@
     android:layout_marginTop="5dp"
     android:minHeight="35dp">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:fontFamily="@font/work_sans_regular"
+        android:id="@+id/messageDateRight"/>
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_below="@id/messageDateRight"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_item_message_right"
         android:minHeight="35dp"
