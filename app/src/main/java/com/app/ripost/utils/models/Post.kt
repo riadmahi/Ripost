@@ -12,7 +12,13 @@ data class Post(
         val likes: Int,
         val comments: Int,
         val shares: Int,
-        val createdAt: String
+        val createdAt: String,
+        val public: Boolean,
+        val location: String,
+        val authorizeComments: Boolean,
+        val authorizeShare: Boolean,
+        val tags: ArrayList<String>
         ): Parcelable{
-    constructor(): this("", "", "", "", 0, 0, 0, "")
+    constructor(): this("", "", "", "", 0, 0, 0, "", true, "",
+    true, true, ArrayList())
 }

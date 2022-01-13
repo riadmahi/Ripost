@@ -1,6 +1,7 @@
 package com.app.ripost.utils.database
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
@@ -8,6 +9,7 @@ import com.app.ripost.R
 import com.app.ripost.utils.DateUtils
 import com.app.ripost.utils.models.Group
 import com.app.ripost.utils.models.Message
+import com.app.ripost.utils.models.Post
 import com.app.ripost.utils.models.User
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.ktx.auth
@@ -19,6 +21,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
+import java.io.ByteArrayOutputStream
 
 
 class FirebaseMethods(private val context: Context) {
@@ -100,7 +103,6 @@ class FirebaseMethods(private val context: Context) {
     }
 
     fun uploadProfilePhoto(imgUri: Uri, callback: FirebaseCallback){
-        val uid = auth.uid.toString()
         val storageReference: StorageReference = FirebaseStorage.getInstance().reference
             .child("USERS/$uid/PROFILE_PHOTO")
         val uploadTask: UploadTask?
@@ -413,6 +415,73 @@ class FirebaseMethods(private val context: Context) {
         return db.collection(context.getString(R.string.dbname_messages)).document().id
     }
 
+
+    fun uploadPostProcess(callback: FirebaseCallback, thumbInBitmap: Bitmap, videoUri: Uri,
+    public: Boolean, share: Boolean, comments: Boolean){
+        val id = getRandomID()
+        var progress = 0.0
+        val baos = ByteArrayOutputStream()
+        thumbInBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data: ByteArray = baos.toByteArray()
+        val storageReference: StorageReference = FirebaseStorage.getInstance().reference
+                .child("POSTS/${id}/THUMBNAIL")
+        val uploadTask: UploadTask?
+        uploadTask = storageReference.putBytes(data)
+        uploadTask.addOnSuccessListener(OnSuccessListener {
+            storageReference.downloadUrl
+                    .addOnSuccessListener { photoUrl ->
+                        Log.d(TAG, "uploadPostProcess: upload thumbnail successful")
+                        val storageReference2: StorageReference = FirebaseStorage.getInstance().reference
+                                .child("POSTS/${id}/VIDEO")
+                        val uploadTask2 = storageReference2.putFile(videoUri)
+
+                        uploadTask2.addOnSuccessListener{
+                            storageReference.downloadUrl
+                                    .addOnSuccessListener { url ->
+                                        Log.d(TAG, "uploadPostProcess: upload video successful")
+                                        val post = Post(
+                                                id,
+                                                photoUrl.toString(),
+                                                uid,
+                                                url.toString(),
+                                                0,
+                                                0,
+                                                0,
+                                                DateUtils().getTimestamp(),
+                                                public,
+                                                context.getResources().getConfiguration().locale.getDisplayCountry(),
+                                                comments,
+                                                share,
+                                                ArrayList()
+                                        )
+
+                                        callback.onFailure()
+
+
+                                    }
+                        }.addOnFailureListener {
+                            Log.w(TAG, "uploadProfilePhoto: profile photo upload failed.")
+                            Toast.makeText(context, "Upload video failed, please reattempt.", Toast.LENGTH_SHORT).show()
+                            callback.onFailure()
+                        }.addOnProgressListener {
+                            progress  =
+                                    (100.0 * it.bytesTransferred )/ it.totalByteCount
+                            callback.progressUpload(progress.toInt())
+                        }
+
+
+                    }
+        }).addOnFailureListener {
+            Log.w(TAG, "uploadProfilePhoto: profile photo upload failed.")
+            Toast.makeText(context, "Upload video failed, please reattempt.", Toast.LENGTH_SHORT).show()
+            callback.onFailure()
+        }.addOnProgressListener {
+            progress  =
+                    (100.0 * it.bytesTransferred )/ it.totalByteCount
+            callback.progressUpload(progress.toInt())
+        }
+
+    }
 
     companion object{
         private const val TAG = "FirebaseMethods"
