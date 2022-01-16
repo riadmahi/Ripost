@@ -74,7 +74,6 @@ class ViewMembersRecyclerAdapter(private val mContext: Context, private val mGro
 
 
     companion object {
-        private const val TAG = "ViewMembersRecyclerAdap"
 
     }
 }

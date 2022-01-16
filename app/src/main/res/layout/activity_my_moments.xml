@@ -73,6 +73,11 @@
         android:layout_below="@+id/rel"
         android:layout_margin="50dp"/>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/container"/>
+
 
 
 </RelativeLayout>

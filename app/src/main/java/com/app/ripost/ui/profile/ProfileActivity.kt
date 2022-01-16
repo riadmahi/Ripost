@@ -9,9 +9,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ripost.R
 import com.app.ripost.ui.settings.SettingsActivity
-import com.app.ripost.utils.adapters.ProfileGridViewAdapter
 import com.app.ripost.utils.BottomNavigationHelper
-import com.app.ripost.utils.database.FirebaseCallback
 import com.app.ripost.utils.database.FirebaseMethods
 import com.app.ripost.utils.database.FirebaseRetrieveUserCallback
 import com.app.ripost.utils.models.User
@@ -61,7 +59,7 @@ class ProfileActivity: AppCompatActivity() {
 
 
         profileGridView.isExpanded = true
-        val mPhotoGridViewAdapter = ProfileGridViewAdapter(photos, this)
+        //val mPhotoGridViewAdapter = ProfileGridViewAdapter(photos, this)
         //profileGridView.adapter = mPhotoGridViewAdapter
     }
     private fun setupUserInformation(){

@@ -12,8 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ripost.R
-import com.app.ripost.ui.settings.DisplayNameFragment
-import com.app.ripost.ui.settings.SettingsActivity
 import com.app.ripost.utils.DateUtils
 import com.app.ripost.utils.adapters.MessageRecyclerAdapter
 import com.app.ripost.utils.database.FirebaseCallbackMsg
@@ -138,7 +136,7 @@ class MessageActivity : AppCompatActivity() {
         layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         if (adapter == null){
             messageRecycler.layoutManager = layoutManager
-            adapter = MessageRecyclerAdapter(this, mMessages, mGroup!!, mUsers)
+            adapter = MessageRecyclerAdapter(this, mMessages, mUsers)
             messageRecycler.adapter = adapter
         }else{
             adapter!!.notifyDataSetChanged()

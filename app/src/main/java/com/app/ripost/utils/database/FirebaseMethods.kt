@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import com.app.ripost.R
 import com.app.ripost.utils.DateUtils
+import com.app.ripost.utils.StringManipulation
 import com.app.ripost.utils.models.Group
 import com.app.ripost.utils.models.Message
 import com.app.ripost.utils.models.Post
@@ -22,6 +23,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import java.io.ByteArrayOutputStream
+import java.util.regex.Pattern
 
 
 class FirebaseMethods(private val context: Context) {
@@ -406,7 +408,7 @@ class FirebaseMethods(private val context: Context) {
         return ""
     }
 
-    fun deleteAllGroupMessages(groupID: String){
+    private fun deleteAllGroupMessages(groupID: String){
         db.collection(context.getString(R.string.dbname_messages))
                 .document(groupID).delete()
     }
@@ -416,8 +418,8 @@ class FirebaseMethods(private val context: Context) {
     }
 
 
-    fun uploadPostProcess(callback: FirebaseCallback, thumbInBitmap: Bitmap, videoUri: Uri,
-    public: Boolean, share: Boolean, comments: Boolean){
+    fun uploadPostProcess(thumbInBitmap: Bitmap, videoUri: Uri,
+    public: Boolean, share: Boolean, comments: Boolean, description: String, callback: FirebaseCallback){
         val id = getRandomID()
         var progress = 0.0
         val baos = ByteArrayOutputStream()
@@ -436,32 +438,38 @@ class FirebaseMethods(private val context: Context) {
                         val uploadTask2 = storageReference2.putFile(videoUri)
 
                         uploadTask2.addOnSuccessListener{
-                            storageReference.downloadUrl
+                            storageReference2.downloadUrl
                                     .addOnSuccessListener { url ->
                                         Log.d(TAG, "uploadPostProcess: upload video successful")
                                         val post = Post(
                                                 id,
                                                 photoUrl.toString(),
+                                                description,
                                                 uid,
                                                 url.toString(),
                                                 0,
                                                 0,
                                                 0,
+                                                0,
                                                 DateUtils().getTimestamp(),
                                                 public,
-                                                context.getResources().getConfiguration().locale.getDisplayCountry(),
+                                                context.resources.configuration.locale.displayCountry,
                                                 comments,
                                                 share,
-                                                ArrayList()
+                                                StringManipulation().getTags(description)
                                         )
 
-                                        callback.onFailure()
+                                        db.collection(context.getString(R.string.dbname_posts)).document(id).set(post)
+                                        callback.onFinish()
 
 
                                     }
                         }.addOnFailureListener {
-                            Log.w(TAG, "uploadProfilePhoto: profile photo upload failed.")
+                            Log.w(TAG, "uploadPostProcess: upload video failed.")
                             Toast.makeText(context, "Upload video failed, please reattempt.", Toast.LENGTH_SHORT).show()
+                            //DELETE THE VIDEO THUMBNAIL IF THE VIDEO DOWNLOAD FAIL.
+                            FirebaseStorage.getInstance().reference
+                                    .child("POSTS/${id}/THUMBNAIL").delete()
                             callback.onFailure()
                         }.addOnProgressListener {
                             progress  =
@@ -482,6 +490,8 @@ class FirebaseMethods(private val context: Context) {
         }
 
     }
+
+
 
     companion object{
         private const val TAG = "FirebaseMethods"

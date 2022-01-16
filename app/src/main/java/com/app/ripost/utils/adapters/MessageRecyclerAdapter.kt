@@ -13,14 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.ripost.R
 import com.app.ripost.ui.message.MessageActivity
 import com.app.ripost.utils.DateUtils
-import com.app.ripost.utils.models.Group
 import com.app.ripost.utils.models.Message
 import com.app.ripost.utils.models.User
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 
-class MessageRecyclerAdapter (private val mContext: Context, private val mMessages: MutableList<Message>, private val group: Group,
+class MessageRecyclerAdapter (private val mContext: Context, private val mMessages: MutableList<Message>,
                               private val mUsers: MutableList<User>
 )
     : RecyclerView.Adapter<MessageRecyclerAdapter.ViewHolder>() {

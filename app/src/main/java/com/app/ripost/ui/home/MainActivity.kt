@@ -10,12 +10,10 @@ import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.app.ripost.R
 import com.app.ripost.ui.message.ChatBottomSheet
-import com.app.ripost.ui.message.MessageActivity
 import com.app.ripost.ui.video.ViewVideoBottomSheet
 import com.app.ripost.ui.welcome.WelcomeActivity
 import com.app.ripost.utils.adapters.MainViewPagerAdapter
 import com.app.ripost.utils.BottomNavigationHelper
-import com.app.ripost.utils.models.Group
 import com.google.firebase.auth.FirebaseAuth
 import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,7 +24,6 @@ import kotlinx.android.synthetic.main.snippet_home_toolbar.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-    private var mGroup: Group = Group()
     private var mAdapter : MainViewPagerAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

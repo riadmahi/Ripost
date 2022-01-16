@@ -9,12 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ripost.R
-import com.app.ripost.utils.adapters.MessageRecyclerAdapter
 import com.app.ripost.utils.adapters.NewChatRecyclerAdapter
-import com.app.ripost.utils.database.FirebaseCallback
 import com.app.ripost.utils.database.FirebaseCallbackFriends
 import com.app.ripost.utils.database.FirebaseMethods
-import kotlinx.android.synthetic.main.activity_message.*
 import kotlinx.android.synthetic.main.snippet_toolbar.view.*
 
 class NewChatFragment : Fragment() {

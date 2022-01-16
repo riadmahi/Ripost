@@ -1,15 +1,19 @@
 package com.app.ripost.ui.camera
 
-import android.R.attr.path
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.media.MediaMetadataRetriever
 import android.media.MediaMetadataRetriever.METADATA_KEY_DURATION
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ripost.R
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions.option
+import com.app.ripost.ui.home.MainActivity
+import com.app.ripost.utils.database.FirebaseCallback
+import com.app.ripost.utils.database.FirebaseMethods
 import kotlinx.android.synthetic.main.activity_upload.*
 import kotlinx.android.synthetic.main.snippet_toolbar.*
 import java.io.File
@@ -17,6 +21,7 @@ import java.io.File
 
 class UploadActivity : AppCompatActivity() {
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_upload)
@@ -47,6 +52,41 @@ class UploadActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(p0: SeekBar?) {
             }
         })
+
+        save.setOnClickListener{
+            save.visibility = View.GONE
+            progress_bar.visibility = View.VISIBLE
+            progress_bar.max = 100
+            FirebaseMethods(this).uploadPostProcess(extractedImage!!, Uri.fromFile(File(videoPath!!)),
+                    !switchPrivate.isChecked,
+                    switchAuthorizeShares.isChecked,
+                    switchAuthorizeComments.isChecked,
+                    description.text.toString(),
+                    object : FirebaseCallback {
+                        override fun progressUpload(progress: Int) {
+                            progress_bar.progress = progress
+                        }
+
+                        override fun onFinish() {
+                            progress_bar.visibility = View.GONE
+                            if(!isSave){
+                                //Delete the video if is not save
+                                File(videoPath).delete()
+                            }
+                            val intent = Intent(this@UploadActivity, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+
+                        override fun onFailure() {
+                            progress_bar.visibility = View.GONE
+                            save.visibility = View.VISIBLE
+                        }
+                    })
+        }
+        back.setOnClickListener {
+            finish()
+        }
     }
 
     companion object{

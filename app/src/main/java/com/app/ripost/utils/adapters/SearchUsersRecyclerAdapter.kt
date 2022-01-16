@@ -90,7 +90,6 @@ class SearchUsersRecyclerAdapter(private val mContext: Context, private val mUse
     }
 
     companion object{
-        private const val TAG = "SearchUsersRecycler"
         private const val VIEW_USERS = 0
         private const val VIEW_LOAD_MORE = 1
 

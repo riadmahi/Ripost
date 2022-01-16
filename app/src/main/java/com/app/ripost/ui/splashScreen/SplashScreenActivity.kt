@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.app.ripost.R
-import com.app.ripost.ui.camera.CameraActivity
 import com.app.ripost.ui.home.MainActivity
 import java.util.*
 import kotlin.concurrent.timerTask

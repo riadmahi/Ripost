@@ -1,5 +1,6 @@
 package com.app.ripost.ui.camera
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -28,6 +29,7 @@ class MyMomentsActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Suppress("deprecation")
     private fun getAllVideosFromGallery(){
         videos.clear()
@@ -53,7 +55,7 @@ class MyMomentsActivity : AppCompatActivity() {
                 if(duration < 20000) {
                     videos.add(videoPath)
 
-                    durations.add((duration/1000).toInt().toString())
+                    durations.add((duration/1000).toString())
                 }
             } while (cursor.moveToNext())
         }
@@ -64,7 +66,16 @@ class MyMomentsActivity : AppCompatActivity() {
             noMoments.visibility = View.VISIBLE
         }
         momentsNumber.text = "${videos.size} Videos"
-        val adapter = MyMomentGridViewAdapter(videos,durations, this)
+        val adapter = MyMomentGridViewAdapter(videos, durations, this, object : MyMomentGridViewAdapter.GridViewCallback {
+            override fun onVideoClicked(video: String) {
+                Log.d(TAG, "onVideoClicked: video clicked: $video")
+                val fragment = ViewMomentFragment()
+                val args = Bundle()
+                args.putString("EXTRA_VIDEO", video)
+                fragment.arguments = args
+                supportFragmentManager.beginTransaction().replace(R.id.container, fragment, "FROM_MOMENT").commit()
+            }
+        })
         momentsGridView.adapter = adapter
         adapter.notifyDataSetChanged()
 

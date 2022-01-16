@@ -1,7 +1,7 @@
 package com.app.ripost.ui.message
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.ripost.R
-import com.app.ripost.utils.adapters.ChatRecyclerAdapter
 import com.app.ripost.utils.adapters.ViewMembersRecyclerAdapter
 import com.app.ripost.utils.models.Group
 import com.app.ripost.utils.models.User
@@ -21,6 +20,7 @@ class ViewMembersFragment : Fragment() {
 
     private var mUsers: MutableList<User> = mutableListOf()
     private var mGroup : Group? = null
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_view_members, container, false)
 

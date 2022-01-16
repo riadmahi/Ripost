@@ -31,11 +31,11 @@ class SongsBottomSheet : BottomSheetDialogFragment() {
         SpotifyAppRemote.connect(requireContext(), connectionParams,
             object : Connector.ConnectionListener {
                 override fun onConnected(spotifyAppRemote: SpotifyAppRemote?) {
-                    mSpotifyAppRemote = spotifyAppRemote;
+                    mSpotifyAppRemote = spotifyAppRemote
                     Log.d(TAG, "onConnected: Connected! Yay!")
 
                     // Now you can start interacting with App Remote
-                    connected();
+                    connected()
                 }
 
                 override fun onFailure(error: Throwable?) {

@@ -10,8 +10,6 @@ import com.app.ripost.utils.database.FirebaseCallbackSuccess
 import com.app.ripost.utils.database.FirebaseMethods
 import com.app.ripost.utils.models.User
 import com.bumptech.glide.Glide
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.activity_view_profile.*
 import kotlinx.android.synthetic.main.snippet_profile_follow.*
@@ -26,6 +24,7 @@ class ViewProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_profile)
+        Log.d(TAG, "onCreate: started.")
         editProfile.visibility = View.GONE
         report.visibility = View.VISIBLE
         mUser = intent.getParcelableExtra("EXTRA_USER")
@@ -40,6 +39,7 @@ class ViewProfileActivity : AppCompatActivity() {
         }else{
             if(checkIfFriend()){
                 //Load the gridView
+                Log.d(TAG, "onCreate: They are friends.")
             }
         }
         setupWidgets()

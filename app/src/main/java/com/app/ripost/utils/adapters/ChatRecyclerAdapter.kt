@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ripost.R
-import com.app.ripost.ui.home.ChatFragment
 import com.app.ripost.ui.home.MainActivity
 import com.app.ripost.ui.message.MessageActivity
 import com.app.ripost.utils.DateUtils
@@ -23,7 +22,6 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.auth.FirebaseAuth
 import com.thekhaeng.pushdownanim.PushDownAnim
-import org.w3c.dom.Text
 
 class ChatRecyclerAdapter (private val mContext: Context, private val mGroups: MutableList<Group>
 )
@@ -118,9 +116,4 @@ class ChatRecyclerAdapter (private val mContext: Context, private val mGroups: M
     }
 
 
-
-    companion object {
-        private const val TAG = "ChatRecyclerAdapter"
-
-    }
 }

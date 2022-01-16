@@ -13,8 +13,13 @@ import com.app.ripost.R
 import com.bumptech.glide.Glide
 import java.io.File
 
-class MyMomentGridViewAdapter  (val videos: MutableList<String>, val durations: MutableList<String>, context: Context) : BaseAdapter() {
+class MyMomentGridViewAdapter  (val videos: MutableList<String>, val durations: MutableList<String>, val context: Context,
+                                private val mGridViewCallback: GridViewCallback) : BaseAdapter() {
 
+
+    interface GridViewCallback{
+        fun onVideoClicked(video:String )
+    }
     private var mContext: Context = context
     override fun getCount(): Int {
         return videos.size
@@ -45,6 +50,10 @@ class MyMomentGridViewAdapter  (val videos: MutableList<String>, val durations: 
             .load(Uri.fromFile(File(videos[i])))
             .centerCrop()
             .into(imageView)
+
+        imageView.setOnClickListener {
+            mGridViewCallback.onVideoClicked(videos[i])
+        }
 
         return mView
     }

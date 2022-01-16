@@ -7,11 +7,13 @@ import kotlinx.android.parcel.Parcelize
 data class Post(
         val postID: String,
         val thumbnail: String,
+        val description: String,
         val createdBy: String,
         val videoUrl: String,
         val likes: Int,
         val comments: Int,
         val shares: Int,
+        val views: Int,
         val createdAt: String,
         val public: Boolean,
         val location: String,
@@ -19,6 +21,6 @@ data class Post(
         val authorizeShare: Boolean,
         val tags: ArrayList<String>
         ): Parcelable{
-    constructor(): this("", "", "", "", 0, 0, 0, "", true, "",
+    constructor(): this("", "","", "", "", 0, 0, 0, 0,"", true, "",
     true, true, ArrayList())
 }

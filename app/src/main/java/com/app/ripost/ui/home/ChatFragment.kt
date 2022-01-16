@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.ripost.R
-import com.app.ripost.ui.message.ChatBottomSheet
 import com.app.ripost.utils.adapters.ChatRecyclerAdapter
 import com.app.ripost.utils.database.FirebaseCallbackGroups
 import com.app.ripost.utils.database.FirebaseMethods
